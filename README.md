@@ -1,9 +1,14 @@
 Java Embedded Framework (JEF)
 ========================
 
-The definitive JEF reference (including an overview and usage details) 
+<!--The definitive JEF reference (including an overview and usage details) 
 is in the [JavaDoc](http://java-embedded-framework.github.io/jef/0.1-ALPHA/javadoc/).  
-Please read the [overview](http://java-embedded-framework.github.io/jef/0.1-ALPHA/javadoc/overview-summary.html#overview_description).  Questions, comments, or exploratory conversations should begin on the [mailing list](http://groups.google.com/group/jna-users), although you may find it easier to find answers to already-solved problems on [StackOverflow](http://stackoverflow.com/questions/tagged/jna).
+Please read the [overview](http://java-embedded-framework.github.io/jef/0.1-ALPHA/javadoc/overview-summary.html#overview_description).  
+Questions, comments, or exploratory conversations should begin on the 
+[mailing list](http://groups.google.com/group/jna-users), 
+although you may find it easier to find answers to already-solved problems 
+on [StackOverflow](http://stackoverflow.com/questions/tagged/jef).
+-->
 
 JEF provides Java programs easy high level access directly from code 
 to hardware interfaces like [SPI](https://en.wikipedia.org/wiki/Serial_Peripheral_Interface), 
