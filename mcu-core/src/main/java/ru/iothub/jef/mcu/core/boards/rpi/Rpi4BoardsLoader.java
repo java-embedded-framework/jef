@@ -29,58 +29,47 @@
  * Please contact sales@iot-hub.ru if you have any question.
  */
 
-package ru.iothub.jef.examples.misc;
+package ru.iothub.jef.mcu.core.boards.rpi;
 
-import ru.iothub.jef.examples.Example;
-import ru.iothub.jef.examples.ExampleExecutor;
-import ru.iothub.jef.linux.gpio.Pin;
-import ru.iothub.jef.mcu.core.boards.BoardPin;
-import ru.iothub.jef.mcu.core.boards.rpi.RaspberryPi4B;
+import ru.iothub.jef.mcu.core.boards.Board;
+import ru.iothub.jef.mcu.core.boards.BoardLoader;
 
-public class Blink implements Example {
-    public static final int PIN_NUMBER = 40;
-    public static final int DELAY_TIME_MS = 1000;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
-    private RaspberryPi4B board;
+// https://elinux.org/RPi_HardwareHistory
+public class Rpi4BoardsLoader implements BoardLoader {
+    private final static String HW_KEY = "Hardware";
+    private final static String HW_VALUE = "BCM2835";
+    private final static String REV_KEY = "Revision";
 
-    @Override
-    public String getName() {
-        return "Blink LED in PIN " + PIN_NUMBER;
-    }
-
-    @Override
-    public void init() throws Exception {
-        board = new RaspberryPi4B();
-        System.out.println("Please connect LED to PIN-" + PIN_NUMBER + " press <enter> to continue");
-        ExampleExecutor.readLine();
-    }
-
-    @Override
-    public void execute() throws Exception {
-        BoardPin pin = board.getPin(PIN_NUMBER);
-
-        Pin.State oldState = pin.digitalRead();
-
-
-        pin.pinMode(Pin.Mode.OUTPUT);
-        boolean active = false;
-
-        for (int i = 0; i < 10; i++) {
-            System.out.println("Blinking... " + (active ? "ON" : "OFF"));
-            pin.digitalWrite(
-                    active ? Pin.State.HIGH : Pin.State.LOW
-            );
-            active = !active;
-            Thread.sleep(DELAY_TIME_MS);
+    private final static List<String> REV_VALUES = new ArrayList<>() {
+        {
+            add("a03111");
+            add("b03111");
+            add("b03112");
+            add("b03114");
+            add("c03111");
+            add("c03112");
+            add("c03114");
+            add("d03114");
         }
+    };
 
-        pin.digitalWrite(oldState);
-        System.out.println("Please press <enter> to return to menu");
-        ExampleExecutor.readLine();
+    @Override
+    public boolean acceptCpuInfo(Properties props) {
+        String hw = props.getProperty(HW_KEY);
+        if (!HW_VALUE.equals(hw)) {
+            return false;
+        }
+        String rev = props.getProperty(REV_KEY);
+        return rev != null && REV_VALUES.contains(rev);
     }
 
     @Override
-    public void showIntro() {
-        System.out.println("Blinking LED 10 times in RPI Pin " + PIN_NUMBER);
+    public Board create() throws IOException {
+        return new RaspberryPi4B();
     }
 }

@@ -33,6 +33,7 @@ package ru.iothub.jef.examples;
 
 import ru.iothub.jef.examples.gpio.GpioPinFunctions;
 import ru.iothub.jef.examples.gpio.GpioReadAll;
+import ru.iothub.jef.examples.gpio.GpioReader;
 import ru.iothub.jef.examples.i2c.BCM280Example;
 import ru.iothub.jef.examples.i2c.I2CScanner;
 import ru.iothub.jef.examples.misc.Blink;
@@ -61,6 +62,7 @@ class ExampleManager {
             add(new ExampleGroup("GPIO") {
                 {
                     add(new Blink());
+                    add(new GpioReader());
                 }
             });
 

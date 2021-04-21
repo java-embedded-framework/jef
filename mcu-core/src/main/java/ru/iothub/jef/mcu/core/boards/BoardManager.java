@@ -29,27 +29,29 @@
  * Please contact sales@iot-hub.ru if you have any question.
  */
 
-package ru.iothub.jef.mcu.core.bcm;
+package ru.iothub.jef.mcu.core.boards;
 
-import ru.iothub.jef.linux.core.io.FileHandle;
-import ru.iothub.jef.linux.core.Mman;
-import ru.iothub.jef.mcu.core.CpuClock;
-
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.IntBuffer;
+import java.io.InputStreamReader;
+import java.util.Properties;
+import java.util.ServiceLoader;
 
-import static ru.iothub.jef.linux.core.Mman.MemoryFlag.MAP_SHARED;
-import static ru.iothub.jef.linux.core.Mman.MemoryProtection.PROT_READ_WRITE;
+public class BoardManager {
+    private final static String CPU_INFO_PATH = "/proc/cpuinfo";
 
-public class BCMCpuClock extends CpuClock {
-    private final static int BLOCK_SIZE = 1060;
+    public static Board getBoard() throws IOException {
+        Properties props = new Properties();
+        try (InputStreamReader is = new InputStreamReader(new FileInputStream(CPU_INFO_PATH))) {
+            props.load(is);
+        }
 
-    private final IntBuffer mem;
-
-    public BCMCpuClock(FileHandle fd, long offset) throws IOException {
-        super();
-        mem = Mman.getInstance().mmap(fd, PROT_READ_WRITE, MAP_SHARED, offset, BLOCK_SIZE)
-                .asIntBuffer();
-
+        ServiceLoader<BoardLoader> sl = ServiceLoader.load(BoardLoader.class);
+        for(BoardLoader bl : sl) {
+            if(bl.acceptCpuInfo(props)) {
+                return bl.create();
+            }
+        }
+        throw new IOException("Can't identify board");
     }
 }

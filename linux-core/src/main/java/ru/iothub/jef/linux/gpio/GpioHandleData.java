@@ -29,30 +29,20 @@
  * Please contact sales@iot-hub.ru if you have any question.
  */
 
-package ru.iothub.jef.linux.core.types;
+package ru.iothub.jef.linux.gpio;
 
-public class LongReference extends Reference {
-    private long value;
+import java.util.Objects;
 
-    public LongReference(long value) {
-        this.value = value;
+public class GpioHandleData {
+    private final byte[] values;
+
+    public GpioHandleData(byte[] values) {
+        Objects.requireNonNull(values);
+        this.values = values;
     }
 
-    public LongReference() {
+    public byte[] getValues() {
+        return values;
     }
 
-    public long getValue() {
-        return value;
-    }
-
-    public void setValue(long value) {
-        this.value = value;
-    }
-
-    @Override
-    public String toString() {
-        return "LongReference{" +
-                "value=" + value +
-                '}';
-    }
 }

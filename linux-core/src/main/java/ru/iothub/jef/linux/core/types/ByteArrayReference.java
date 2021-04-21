@@ -31,28 +31,22 @@
 
 package ru.iothub.jef.linux.core.types;
 
-public class LongReference extends Reference {
-    private long value;
+@SuppressWarnings("unused")
+public class ByteArrayReference extends Reference {
+    private byte[] value;
 
-    public LongReference(long value) {
+    public ByteArrayReference() {
+    }
+
+    public ByteArrayReference(byte[] value) {
         this.value = value;
     }
 
-    public LongReference() {
-    }
-
-    public long getValue() {
+    public byte[] getValue() {
         return value;
     }
 
-    public void setValue(long value) {
+    public void setValue(byte[] value) {
         this.value = value;
-    }
-
-    @Override
-    public String toString() {
-        return "LongReference{" +
-                "value=" + value +
-                '}';
     }
 }

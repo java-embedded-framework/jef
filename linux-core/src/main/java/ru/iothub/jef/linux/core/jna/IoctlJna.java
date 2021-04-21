@@ -36,14 +36,15 @@ import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.LongByReference;
 import ru.iothub.jef.linux.core.LinuxUtils;
 import ru.iothub.jef.linux.core.NativeIOException;
+import ru.iothub.jef.linux.core.Sys;
 import ru.iothub.jef.linux.core.io.FileHandle;
 import ru.iothub.jef.linux.core.Ioctl;
-import ru.iothub.jef.linux.core.types.IntReference;
-import ru.iothub.jef.linux.core.types.LongReference;
-import ru.iothub.jef.linux.core.types.SmbusIoctlData;
-import ru.iothub.jef.linux.core.types.SpiIocTransfer;
+import ru.iothub.jef.linux.core.types.*;
+import ru.iothub.jef.linux.gpio.*;
 
 import java.nio.ByteBuffer;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -64,6 +65,7 @@ public class IoctlJna extends Ioctl {
     private final static long _IOC_NONE = 0;
     private final static long _IOC_READ = 2;
     private final static long _IOC_WRITE = 1;
+    private final static int GPIOHANDLES_MAX = 64;
 
     private static int _SPI_IOC_TRANSFER_SIZE = -1;
 
@@ -221,6 +223,140 @@ public class IoctlJna extends Ioctl {
         return result;
     }
 
+    @Override
+    public int ioctl(FileHandle handle, long command, GpioChipInfo info) throws NativeIOException {
+        gpiochip_info struct = new gpiochip_info();
+        int result = Delegate.ioctl(handle.getHandle(), new NativeLong(command, true), struct);
+        info.setName(struct.getName());
+        info.setLabel(struct.getLabel());
+        info.setLines(struct.getLines());
+        checkIOResult("ioctl:gpio_chip_info", result);
+        return result;
+    }
+
+    @Override
+    public int ioctl(FileHandle handle, long command, GpioLineInfo line) throws NativeIOException {
+        gpioline_info struct = new gpioline_info(line.getOffset());
+        int result = Delegate.ioctl(handle.getHandle(), new NativeLong(command, true), struct);
+
+        checkIOResult("ioctl:gpio_line_info", result);
+
+        line.setFlags(struct.getFlags());
+        line.setName(struct.getName());
+        line.setConsumer(struct.getConsumer());
+
+        return result;
+    }
+
+    @Override
+    public int ioctl(FileHandle handle, long command, GpioHandleRequest request) throws NativeIOException {
+        gpiohandle_request struct = new gpiohandle_request(request);
+
+        int result = Delegate.ioctl(handle.getHandle(), new NativeLong(command, true), struct);
+        checkIOResult("ioctl:gpio_handle_request", result);
+        request.setFd(struct.fd);
+
+        return result;
+    }
+
+    @Override
+    public int ioctl(int fd, long command, GpioHandleData handleData) throws NativeIOException {
+        Objects.requireNonNull(handleData);
+
+        gpiohandle_data data = new gpiohandle_data();
+
+        byte[] from = handleData.getValues();
+        byte[] to = data.values;
+        int size = Math.min(from.length, to.length);
+        System.arraycopy(from, 0, to, 0, size);
+
+        int result = Delegate.ioctl(fd, new NativeLong(command), data);
+        checkIOResult("ioctl:byte_array_ref", result);
+        System.arraycopy(to, 0, from, 0, size);
+        return result;
+    }
+
+    @Structure.FieldOrder("values")
+    public static class gpiohandle_data extends Structure {
+        public byte[] values = new byte[GPIOHANDLES_MAX];
+    }
+
+    @Structure.FieldOrder({"lineoffsets", "flags", "default_values", "consumer_label", "lines", "fd"/*, "buf"*/})
+    public static class gpiohandle_request extends Structure {
+        public int[] lineoffsets = new int[GPIOHANDLES_MAX];
+        public int flags;
+        public byte[] default_values = new byte[GPIOHANDLES_MAX];
+        public byte[] consumer_label = new byte[32];
+        public int lines;
+        public int fd;
+        //public byte[] buf = new byte[0xFF];
+
+        public gpiohandle_request(GpioHandleRequest request) {
+            int[] ints = request.getLineOffsets();
+            if(ints != null) {
+                int length = Math.min(ints.length, lineoffsets.length);
+                System.arraycopy(ints, 0, lineoffsets, 0, length);
+            }
+            this.flags = request.getFlags();
+            this.lines = request.getLines();
+
+            byte[] label = request.getConsumerLabel();
+            if(label != null) {
+                int length = Math.min(label.length, consumer_label.length);
+                System.arraycopy(label, 0, consumer_label,0, length);
+            }
+
+            byte[] defs = request.getDefaultValues();
+            if(defs != null) {
+                int length = Math.min(defs.length, default_values.length);
+                System.arraycopy(defs, 0, default_values, 0, length);
+            }
+        }
+    }
+
+    @Structure.FieldOrder({"line_offset", "flags", "name", "consumer"})
+    public static class gpioline_info extends Structure {
+            public int line_offset;
+            public int flags;
+            public byte[] name = new byte[32];
+            public byte[] consumer = new byte[32];
+
+        public gpioline_info(int offset) {
+            this.line_offset = offset;
+        }
+
+        public int getFlags() {
+            return flags;
+        }
+
+        public String getName() {
+            return new String(name);
+        }
+
+        public String getConsumer() {
+            return new String(consumer);
+        }
+    }
+
+    @Structure.FieldOrder({"name", "label", "lines"})
+    public static class gpiochip_info extends Structure {
+            public byte[] name = new byte[32];
+            public byte[] label = new byte[32];
+            public int lines;
+
+            public String getName() {
+                return new String(name);
+            }
+
+            public String getLabel() {
+                return new String(label);
+            }
+
+        public int getLines() {
+            return lines;
+        }
+    }
+
     @Structure.FieldOrder({"txBuff", "rxBuff", "len", "speedHz", "delayMicros", "bitsPerWord", "csChange", "txNBits", "rxNBits", "pad"})
     public static class SpiIOCTransfer extends Structure {
         public NativeLong txBuff;
@@ -256,8 +392,6 @@ public class IoctlJna extends Ioctl {
             this.delayMicros = delay;
             this.bitsPerWord = bitsPerWord;
         }
-
-
     }
 
     public static class I2CSmbusData extends Union {

@@ -1,25 +1,19 @@
 package ru.iothub.jef.mcu.core.boards;
 
-import ru.iothub.jef.mcu.core.CpuPin;
-import ru.iothub.jef.mcu.core.CpuPinMode;
-import ru.iothub.jef.mcu.core.CpuPinState;
+import ru.iothub.jef.linux.gpio.Pin;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
 
 // Wrapper for CPU Pin
 public class BoardPin {
     private final int number;
     private final String name;
-    private final CpuPin cpuPin;
-    // Wrapper for null pins
-    private final List<String> nameList = new ArrayList<>();
+    private final Pin pin;
 
-    public BoardPin(int number, String name, CpuPin cpuPin) {
+    public BoardPin(int number, String name, Pin cpuPin) {
         this.number = number;
         this.name = name;
-        this.cpuPin = cpuPin;
-        nameList.add(name);
+        this.pin = cpuPin;
     }
 
     public int getPinNumber() {
@@ -27,46 +21,46 @@ public class BoardPin {
     }
 
     public int getCpuPinNumber() {
-        return isDummyPin() ? -1 : cpuPin.getPinNumber();
+        return isDummyPin() ? -1 : pin.getPinNumber();
     }
 
     public String getName() {
         return name;
     }
 
-    public CpuPin getCpuPin() {
-        return cpuPin;
+    public Pin getPin() {
+        return pin;
     }
 
     public String getPinFunctionName() {
         return isDummyPin() ?
-                name : cpuPin.getPinFunctionName();
-    }
-
-    public List<String> getPingFunctionNames() {
-        return isDummyPin() ?
-                nameList : cpuPin.getPingFunctionNames();
+                name : pin.getName();
     }
 
     private boolean isDummyPin() {
-        return cpuPin == null;
+        return pin == null;
     }
 
-    public CpuPinState digitalRead() {
-        return cpuPin == null ? CpuPinState.UNKNOWN : getCpuPin().digitalRead();
-    }
-
-    public void digitalWrite(CpuPinState value) {
-        if(!isDummyPin()) {
-            //System.out.println("Board pin("+number+") writing to cpuPin: " + cpuPin.getPinNumber() + " " + cpuPin.getPinFunctionName());
-            cpuPin.digitalWrite(value);
+    public Pin.State digitalRead()  {
+        try {
+            return pin == null ? Pin.State.LOCKED : getPin().getState();
+        } catch (IOException e) {
+            return Pin.State.LOCKED;
         }
     }
 
-    public void pinMode(CpuPinMode mode) {
-        if(!isDummyPin()) {
-            cpuPin.pinMode(mode);
+    public void digitalWrite(Pin.State value) {
+        if(!isDummyPin() && !pin.isLocked()) {
+            try {
+                pin.setState(value);
+            } catch (IOException ignored) {
+            }
         }
     }
 
+    public void pinMode(Pin.Mode mode) {
+            if(!isDummyPin() && !pin.isLocked()) {
+                pin.setMode(mode);
+            }
+    }
 }

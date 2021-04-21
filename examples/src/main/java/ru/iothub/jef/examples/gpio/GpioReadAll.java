@@ -2,12 +2,10 @@ package ru.iothub.jef.examples.gpio;
 
 import ru.iothub.jef.examples.Example;
 import ru.iothub.jef.examples.ExampleExecutor;
-import ru.iothub.jef.mcu.core.CpuPinState;
+import ru.iothub.jef.linux.gpio.Pin;
 import ru.iothub.jef.mcu.core.boards.Board;
 import ru.iothub.jef.mcu.core.boards.BoardPin;
 import ru.iothub.jef.mcu.core.boards.rpi.RaspberryPi4B;
-
-import java.io.IOException;
 
 public class GpioReadAll implements Example {
     private RaspberryPi4B board;
@@ -77,9 +75,9 @@ public class GpioReadAll implements Example {
         return pin == -1 ? "-" : Integer.toString(pin);
     }
 
-    private static String getPinInOut(CpuPinState val) {
+    private static String getPinInOut(Pin.State val) {
         switch (val) {
-            case UNKNOWN:
+            case LOCKED:
                 return "-";
             case LOW:
                 return "0";

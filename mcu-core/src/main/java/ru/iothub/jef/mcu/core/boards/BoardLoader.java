@@ -29,30 +29,12 @@
  * Please contact sales@iot-hub.ru if you have any question.
  */
 
-package ru.iothub.jef.linux.core.types;
+package ru.iothub.jef.mcu.core.boards;
 
-public class LongReference extends Reference {
-    private long value;
+import java.io.IOException;
+import java.util.Properties;
 
-    public LongReference(long value) {
-        this.value = value;
-    }
-
-    public LongReference() {
-    }
-
-    public long getValue() {
-        return value;
-    }
-
-    public void setValue(long value) {
-        this.value = value;
-    }
-
-    @Override
-    public String toString() {
-        return "LongReference{" +
-                "value=" + value +
-                '}';
-    }
+public interface BoardLoader {
+    boolean acceptCpuInfo(Properties props);
+    Board create() throws IOException;
 }
