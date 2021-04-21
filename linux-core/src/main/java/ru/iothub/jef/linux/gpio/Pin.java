@@ -45,7 +45,7 @@ public class Pin {
     private final Ioctl ioctl;
     private final String name;
     private final String consumer;
-    private final int flags;
+    private int flags;
     private int fd;
     private boolean locked;
     private Mode mode;
@@ -138,11 +138,18 @@ public class Pin {
             int m = (mode == Mode.INPUT) ?
                     GpioHandleRequest.Flags.GPIOHANDLE_REQUEST_INPUT.value :
                     GpioHandleRequest.Flags.GPIOHANDLE_REQUEST_OUTPUT.value;
-            if ((flags & m) > 0) {
+            if ((flags & m) == 0) {
                 GpioHandleRequest request = getGpioHandleRequest(handle, id, m);
                 this.locked = (request == null);
                 this.fd = locked ? -1 : request.getFd();
                 this.mode = mode;
+
+                try {
+                    GpioLineInfo gpioLineInfo = getGpioLineInfo(handle, id);
+                    flags = gpioLineInfo.getFlags();
+                } catch (NativeIOException ignored) {
+                    //e.printStackTrace();
+                }
             }
         }
     }
