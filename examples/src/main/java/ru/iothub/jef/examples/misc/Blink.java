@@ -33,8 +33,8 @@ package ru.iothub.jef.examples.misc;
 
 import ru.iothub.jef.examples.Example;
 import ru.iothub.jef.examples.ExampleExecutor;
-import ru.iothub.jef.linux.gpio.Pin;
-import ru.iothub.jef.mcu.core.boards.BoardPin;
+import ru.iothub.jef.linux.gpio.GpioManager;
+import ru.iothub.jef.linux.gpio.GpioPin;
 import ru.iothub.jef.mcu.core.boards.rpi.RaspberryPi4B;
 
 public class Blink implements Example {
@@ -57,7 +57,32 @@ public class Blink implements Example {
 
     @Override
     public void execute() throws Exception {
-        BoardPin pin = board.getPin(PIN_NUMBER);
+        String path = "/dev/gpiochip0";
+        int pinNumber = 21;
+        GpioPin pin = GpioManager.getPin(path, pinNumber, GpioPin.Direction.OUTPUT);
+        pin.setDirection(GpioPin.Direction.OUTPUT);
+        //PinCtrl.pinMode(path, pin, PinCtrl.Mode.OUTPUT);
+
+        boolean active = true;
+
+        for (int i = 0; i < 10; i++) {
+            System.out.println("Blinking... " + (active ? "ON" : "OFF"));
+            pin.write(active ? GpioPin.State.HIGH : GpioPin.State.LOW);
+            /*PinCtrl.digitalWrite(path, pin,
+                    active ? PinCtrl.State.HIGH : PinCtrl.State.LOW
+            );*/
+
+
+            //PinCtrl.State state = PinCtrl.digitalRead(path, pin);
+            //GpioPin.State state = pin.read();
+            //System.out.println("read state = " + state);
+
+            active = !active;
+            Thread.sleep(DELAY_TIME_MS);
+        }
+        //PinCtrl.pinMode(path, pin, PinCtrl.Mode.INPUT);
+
+        /*BoardPin pin = board.getPin(PIN_NUMBER);
 
         Pin.State oldState = pin.digitalRead();
 
@@ -73,9 +98,10 @@ public class Blink implements Example {
             active = !active;
             Thread.sleep(DELAY_TIME_MS);
         }
-
         pin.digitalWrite(oldState);
+        */
         System.out.println("Please press <enter> to return to menu");
+
         ExampleExecutor.readLine();
     }
 

@@ -2,35 +2,13 @@ package ru.iothub.jef.examples.gpio;
 
 import ru.iothub.jef.examples.Example;
 import ru.iothub.jef.examples.ExampleExecutor;
-import ru.iothub.jef.linux.gpio.Pin;
 import ru.iothub.jef.mcu.core.boards.Board;
 import ru.iothub.jef.mcu.core.boards.BoardPin;
+import ru.iothub.jef.mcu.core.boards.BoardPinState;
 import ru.iothub.jef.mcu.core.boards.rpi.RaspberryPi4B;
 
 public class GpioReadAll implements Example {
     private RaspberryPi4B board;
-
-    @Override
-    public String getName() {
-        return "Read current GPIO board values";
-    }
-
-    @Override
-    public void init() throws Exception {
-        board = new RaspberryPi4B();
-    }
-
-    @Override
-    public void execute() throws Exception {
-        showPinsStatus(board);
-        System.out.println("Please press <enter> to return to menu");
-        ExampleExecutor.readLine();
-    }
-
-    @Override
-    public void showIntro() {
-        System.out.println("This example show current GPIO status");
-    }
 
     private static void showPinsStatus(Board board) {
         int count = board.getPinCount();
@@ -75,15 +53,37 @@ public class GpioReadAll implements Example {
         return pin == -1 ? "-" : Integer.toString(pin);
     }
 
-    private static String getPinInOut(Pin.State val) {
+    private static String getPinInOut(BoardPinState val) {
         switch (val) {
-            case LOCKED:
-                return "-";
+            case HIGH:
+                return "1";
             case LOW:
                 return "0";
             default:
-                return "1";
+                return "-";
         }
+    }
+
+    @Override
+    public String getName() {
+        return "Read current GPIO board values";
+    }
+
+    @Override
+    public void init() throws Exception {
+        board = new RaspberryPi4B();
+    }
+
+    @Override
+    public void execute() throws Exception {
+        showPinsStatus(board);
+        System.out.println("Please press <enter> to return to menu");
+        ExampleExecutor.readLine();
+    }
+
+    @Override
+    public void showIntro() {
+        System.out.println("This example show current GPIO status");
     }
 
 }

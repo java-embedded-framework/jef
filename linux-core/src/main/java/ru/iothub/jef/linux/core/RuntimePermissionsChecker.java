@@ -78,11 +78,11 @@ public class RuntimePermissionsChecker {
             List<String> groups = new ArrayList<>();
 
             List<String> userGroups = ss.getUserGroups();
-            if (!userGroups.contains("kmem")) {
+            /*if (!userGroups.contains("kmem")) {
                 log.log(Level.SEVERE, write("User not contains 'kmem' group."));
                 groupok = false;
                 groups.add("kmem");
-            }
+            }*/
 
             if (!userGroups.contains("i2c")) {
                 log.log(Level.SEVERE, write("User not contains 'i2c' group."));
@@ -111,7 +111,7 @@ public class RuntimePermissionsChecker {
                 write("");
             }
 
-            try {
+            /*try {
                 ok = ss.access("/dev/mem", EnumSet.of(R_OK, W_OK));
             } catch (NativeIOException ignored) {
             }
@@ -120,9 +120,9 @@ public class RuntimePermissionsChecker {
                 log.log(Level.SEVERE, write("ERROR: Current user don't have access to '/dev/mem'. Please run command 'sudo chmod g+rw /dev/mem'"));
                 write("");
                 error = true;
-            }
+            }*/
 
-            int pid = ss.getpid();
+            /*int pid = ss.getpid();
             Cap cp = Cap.getInstance();
             try (Cap.CapStruct cap_t = cp.cap_get_pid(pid)) {
                 boolean flag = cp.cap_get_flag(cap_t, Capability.CAP_SYS_RAWIO, Cap.CapabilityFlag.CAP_EFFECTIVE);
@@ -137,13 +137,13 @@ public class RuntimePermissionsChecker {
                     error = true;
                 }
             } catch (Exception ignored) {
-            }
+            }*/
         }
 
         dump();
-        if (error) {
-            //System.exit(-2);
-        }
+        /*if (error) {
+            System.exit(-2);
+        }*/
     }
 
     private static void dump() {
@@ -160,7 +160,7 @@ public class RuntimePermissionsChecker {
             ;
         }
         builder.append(header).append("\n");
-        System.out.println(builder.toString());
+        System.out.println(builder);
     }
 
     private static String spaces(int length) {

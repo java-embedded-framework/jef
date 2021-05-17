@@ -1,6 +1,6 @@
 package ru.iothub.jef.mcu.core.boards;
 
-import ru.iothub.jef.linux.gpio.Pin;
+import ru.iothub.jef.linux.gpio.GpioPin;
 
 import java.io.IOException;
 
@@ -8,9 +8,9 @@ import java.io.IOException;
 public class BoardPin {
     private final int number;
     private final String name;
-    private final Pin pin;
+    private final GpioPin pin;
 
-    public BoardPin(int number, String name, Pin cpuPin) {
+    public BoardPin(int number, String name, GpioPin cpuPin) {
         this.number = number;
         this.name = name;
         this.pin = cpuPin;
@@ -28,7 +28,7 @@ public class BoardPin {
         return name;
     }
 
-    public Pin getPin() {
+    public GpioPin getPin() {
         return pin;
     }
 
@@ -41,26 +41,26 @@ public class BoardPin {
         return pin == null;
     }
 
-    public Pin.State digitalRead()  {
+    public BoardPinState digitalRead() {
         try {
-            return pin == null ? Pin.State.LOCKED : getPin().getState();
+            return pin == null ? BoardPinState.NOT_SET : BoardPinState.valueOf(getPin().read());
         } catch (IOException e) {
-            return Pin.State.LOCKED;
+            return BoardPinState.NOT_SET;
         }
     }
 
-    public void digitalWrite(Pin.State value) {
-        if(!isDummyPin() && !pin.isLocked()) {
+    public void digitalWrite(BoardPinState value) {
+        if (!isDummyPin()) {
             try {
-                pin.setState(value);
+                pin.write(GpioPin.State.valueOf(value.getValue()));
             } catch (IOException ignored) {
             }
         }
     }
 
-    public void pinMode(Pin.Mode mode) {
-            if(!isDummyPin() && !pin.isLocked()) {
-                pin.setMode(mode);
-            }
+    public void pinMode(GpioPin.Direction mode) throws IOException {
+        if (!isDummyPin()) {
+            pin.setDirection(mode);
+        }
     }
 }

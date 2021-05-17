@@ -2,8 +2,8 @@ package ru.iothub.jef.examples.gpio;
 
 import ru.iothub.jef.examples.Example;
 import ru.iothub.jef.examples.ExampleExecutor;
-import ru.iothub.jef.linux.gpio.Pin;
 import ru.iothub.jef.mcu.core.boards.BoardPin;
+import ru.iothub.jef.mcu.core.boards.BoardPinState;
 import ru.iothub.jef.mcu.core.boards.rpi.RaspberryPi4B;
 
 import java.io.IOException;
@@ -61,9 +61,9 @@ public class GpioPinFunctions implements Example {
         return joiner.toString();
     }
 
-    private static String getPinInOut(Pin.State val) {
+    private static String getPinInOut(BoardPinState val) {
         switch (val) {
-            case LOCKED:
+            case NOT_SET:
                 return "-";
             case LOW:
                 return "0";
