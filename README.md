@@ -80,6 +80,7 @@ Please see details [here](LICENSE)
 What is planned in future releases?
 =======
 * Refactoring and improvements based on community feedbacks
+* Migration to [Project Panama](https://openjdk.java.net/projects/panama/) from [Java Native Access](https://github.com/java-native-access/jna) for Java 16+
 * Add additional devices support in device library
 * Add support for other devices based on BCM2711 chipset (CM4/CM4 lite/400)
 * Add support for other Broadcom chipsets like BCM2835(RPi 1/2/3/Zero) and BCM2837(RPi 2B/3B/CM3)
