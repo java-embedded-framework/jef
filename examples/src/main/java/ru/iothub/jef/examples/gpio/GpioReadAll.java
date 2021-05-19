@@ -4,7 +4,6 @@ import ru.iothub.jef.examples.Example;
 import ru.iothub.jef.examples.ExampleExecutor;
 import ru.iothub.jef.mcu.core.boards.Board;
 import ru.iothub.jef.mcu.core.boards.BoardPin;
-import ru.iothub.jef.mcu.core.boards.BoardPinState;
 import ru.iothub.jef.mcu.core.boards.rpi.RaspberryPi4B;
 
 public class GpioReadAll implements Example {
@@ -29,19 +28,19 @@ public class GpioReadAll implements Example {
     private static void writePinsLine(Board board, int i) {
         BoardPin pin = board.getPin(i);
         String cpuPin = pinToString(pin.getCpuPinNumber());
-        System.out.printf(" | %3s | %8s | %16s | %s | %2d |",
+        System.out.printf(" | %3s | %8s | %16s | %1s | %2d |",
                 cpuPin,
                 pin.getName(),
                 pin.getPinFunctionName(),
-                getPinInOut(pin.digitalRead()),
+                getPinInOut(pin.getPinInfo()),
                 pin.getPinNumber()
                 /*listToComaSeparatedString(pin.getPingFunctionNames())*/
         );
         pin = board.getPin(i + 1);
         cpuPin = pinToString(pin.getCpuPinNumber());
-        System.out.printf("| %2d | %s | %16s | %8s | %3s |\n",
+        System.out.printf("| %2d | %1s | %16s | %8s | %3s |\n",
                 pin.getPinNumber(),
-                getPinInOut(pin.digitalRead()),
+                getPinInOut(pin.getPinInfo()),
                 pin.getPinFunctionName(),
                 pin.getName(),
                 cpuPin
@@ -53,15 +52,18 @@ public class GpioReadAll implements Example {
         return pin == -1 ? "-" : Integer.toString(pin);
     }
 
-    private static String getPinInOut(BoardPinState val) {
-        switch (val) {
+    private static String getPinInOut(BoardPin.BoardPinInfo val) {
+        if (val.isDummyPin()) return "-";
+        if (val.isActiveLow()) return "0";
+        return "1";
+        /*switch (val) {
             case HIGH:
                 return "1";
             case LOW:
                 return "0";
             default:
                 return "-";
-        }
+        }*/
     }
 
     @Override

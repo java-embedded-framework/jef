@@ -242,8 +242,8 @@ public class IoctlJna extends Ioctl {
         checkIOResult("ioctl:gpio_line_info", result);
 
         line.setFlags(struct.getFlags());
-        line.setName(struct.getName());
-        line.setConsumer(struct.getConsumer());
+        line.setName(struct.getName().trim());
+        line.setConsumer(struct.getConsumer().trim());
 
         return result;
     }

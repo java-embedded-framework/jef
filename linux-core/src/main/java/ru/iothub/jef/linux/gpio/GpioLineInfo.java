@@ -83,14 +83,14 @@ public class GpioLineInfo {
     }
 
     public enum Flags {
-        GPIOLINE_FLAG_KERNEL(0), // 0
-        GPIOLINE_FLAG_IS_OUT(1 << 1),// 1
-        GPIOLINE_FLAG_ACTIVE_LOW(1 << 2),// 2
-        GPIOLINE_FLAG_OPEN_DRAIN(1 << 3),// 4
-        GPIOLINE_FLAG_OPEN_SOURCE(1 << 4), // 8
-        GPIOLINE_FLAG_BIAS_PULL_UP(1 << 5), // 16
-        GPIOLINE_FLAG_BIAS_PULL_DOWN(1 << 6), // 32
-        GPIOLINE_FLAG_BIAS_DISABLE(1 << 7) // 64
+        GPIOLINE_FLAG_KERNEL(1), // 1
+        GPIOLINE_FLAG_IS_OUT(1 << 1),// 2
+        GPIOLINE_FLAG_ACTIVE_LOW(1 << 2),// 4
+        GPIOLINE_FLAG_OPEN_DRAIN(1 << 3),// 8
+        GPIOLINE_FLAG_OPEN_SOURCE(1 << 4), // 16
+        GPIOLINE_FLAG_BIAS_PULL_UP(1 << 5), // 32
+        GPIOLINE_FLAG_BIAS_PULL_DOWN(1 << 6), // 64
+        GPIOLINE_FLAG_BIAS_DISABLE(1 << 7) // 128
         ;
         int value;
 
@@ -108,6 +108,10 @@ public class GpioLineInfo {
             }
 
             return flags;
+        }
+
+        public int getValue() {
+            return value;
         }
     }
 }

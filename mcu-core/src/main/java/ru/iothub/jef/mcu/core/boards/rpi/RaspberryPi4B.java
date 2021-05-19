@@ -1,5 +1,6 @@
 package ru.iothub.jef.mcu.core.boards.rpi;
 
+import ru.iothub.jef.linux.core.NativeIOException;
 import ru.iothub.jef.linux.i2c.I2CBus;
 import ru.iothub.jef.linux.spi.SpiBus;
 import ru.iothub.jef.linux.spi.SpiMode;
@@ -17,10 +18,35 @@ public class RaspberryPi4B extends Board {
     private final static int[] pinout = new int[]{
             0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27
     };
+
     private final List<SpiBus> spis;
+    private final List<I2CBus> i2cs;
     private List<BoardPin> pins;
 
     public RaspberryPi4B() throws IOException {
+        spis = initSPI();
+        i2cs = initI2C();
+
+        //PinSet set = PinSet.getInstance(GPIO_MAPPING, pinout);
+        this.pins = initGPIO();
+    }
+
+    private List<BoardPin> initGPIO() throws IOException {
+        return RaspberryPi4BPins.createPins();
+    }
+
+    private List<I2CBus> initI2C() throws NativeIOException {
+        final List<I2CBus> i2cs = new ArrayList<>();
+        if (new File("/dev/i2c-1").exists()) {
+            i2cs.add(
+                    new I2CBus("/dev/i2c-1")
+            );
+        }
+        return Collections.unmodifiableList(i2cs);
+    }
+
+    private List<SpiBus> initSPI() throws NativeIOException {
+        final List<SpiBus> spis;
         List<SpiBus> ss = new ArrayList<>();
         if (new File("/dev/spidev0.0").exists()) {
             ss.add(
@@ -34,10 +60,7 @@ public class RaspberryPi4B extends Board {
             );
         }
 
-        spis = Collections.unmodifiableList(ss);
-
-        //PinSet set = PinSet.getInstance(GPIO_MAPPING, pinout);
-        this.pins = RaspberryPi4BPins.createPins();
+        return Collections.unmodifiableList(ss);
     }
 
     @Override
@@ -51,12 +74,17 @@ public class RaspberryPi4B extends Board {
     }
 
     @Override
+    public List<BoardPin> getPins() {
+        return pins;
+    }
+
+    @Override
     public List<SpiBus> getSpiBuses() {
         return spis;
     }
 
     @Override
     public List<I2CBus> getI2CBuses() {
-        return null;
+        return i2cs;
     }
 }

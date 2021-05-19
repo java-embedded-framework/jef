@@ -40,7 +40,17 @@ public class GpioManager {
     private final static Map<String, GpioPin> pinsets = new HashMap<>();
 
     public static GpioPin getPin(String path, int number) throws IOException {
-        return getPin(path, number, null);
+        synchronized (GpioManager.class) {
+            GpioPin pin;
+            String key = getKey(path, number);
+            if ((pin = getCachedKey(key)) != null) {
+                return pin;
+            }
+            pin = new GpioPin(key, path, number);
+            pinsets.put(key, pin);
+            return pin;
+        }
+        //return getPin(path, number, null);
     }
 
     public static boolean isUsed(String path, int number) {
@@ -49,7 +59,7 @@ public class GpioManager {
         }
     }
 
-    public static GpioPin getPin(String path, int number, GpioPin.Direction direction) throws IOException {
+    /*private static GpioPin getPin(String path, int number, GpioPin.Direction direction) throws IOException {
         synchronized (GpioManager.class) {
             GpioPin pin;
             String key = getKey(path, number);
@@ -65,7 +75,7 @@ public class GpioManager {
             pinsets.put(key, pin);
             return pin;
         }
-    }
+    }*/
 
     private static String getKey(String path, int number) {
         return path + "-" + number;

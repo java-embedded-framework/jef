@@ -50,6 +50,7 @@ public class GpioPin implements AutoCloseable {
     private final int number;
     private final String name;
     private final String consumer;
+    private final boolean locked;
 
     private Direction direction;
     private int handle;
@@ -71,15 +72,10 @@ public class GpioPin implements AutoCloseable {
             this.name = line.getName();
             this.consumer = line.getConsumer();
 
-            this.direction = (flags & GpioLineInfo.Flags.GPIOLINE_FLAG_IS_OUT.value) != 0 ? Direction.OUTPUT : Direction.INPUT;
+            this.locked = (flags & GpioLineInfo.Flags.GPIOLINE_FLAG_KERNEL.value) > 0;
         }
 
 
-    }
-
-    GpioPin(String key, String path, int number, Direction direction) throws IOException {
-        this(key, path, number);
-        setDirection(direction);
     }
 
     public int getPinNumber() {
@@ -98,12 +94,24 @@ public class GpioPin implements AutoCloseable {
         return direction;
     }
 
+    public int getFlags() {
+        return flags;
+    }
+
     public State read() throws IOException {
         checkClosed();
+        checkLocked();
         checkDirection();
+
+        /*if(this.handle < 0) {
+            return (flags & GpioLineInfo.Flags.GPIOLINE_FLAG_ACTIVE_LOW.value) != 0
+                    ? State.LOW : State.HIGH;
+        }*/
+
         if (Direction.OUTPUT.equals(this.direction)) {
             throw new IOException("Can't read from output pin " + path + "-" + number);
         }
+
         GpioHandleData data = new GpioHandleData(new byte[1]);
         Ioctl ioctl = Ioctl.getInstance();
         ioctl.ioctl(handle, ioctl.getGpioHandleGetLineValuesIoctl(), data);
@@ -114,6 +122,7 @@ public class GpioPin implements AutoCloseable {
 
     public void write(State state) throws IOException {
         checkClosed();
+        checkLocked();
         checkDirection();
         if (Direction.INPUT.equals(this.direction)) {
             throw new IOException("Can't write to input pin " + path + "-" + number);
@@ -128,6 +137,7 @@ public class GpioPin implements AutoCloseable {
 
     public void setDirection(Direction direction) throws IOException {
         checkClosed();
+        checkLocked();
         if (this.handle > 0 && this.direction.equals(direction)) {
             return;
         }
@@ -176,7 +186,13 @@ public class GpioPin implements AutoCloseable {
 
     private void checkClosed() throws IOException {
         if (closed) {
-            throw new IOException("Gpio Pin is closed");
+            throw new IOException("Gpio Pin '" + key + "' is closed");
+        }
+    }
+
+    private void checkLocked() throws IOException {
+        if(locked) {
+            throw new IOException("Gpio Pin '" + key + "' locked by kernel");
         }
     }
 
@@ -194,7 +210,7 @@ public class GpioPin implements AutoCloseable {
         LOW(0),
         HIGH(1);
 
-        private int value;
+        private final int value;
 
         State(int value) {
             this.value = value;

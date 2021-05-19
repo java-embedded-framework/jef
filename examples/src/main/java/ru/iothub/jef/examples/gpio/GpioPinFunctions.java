@@ -3,7 +3,6 @@ package ru.iothub.jef.examples.gpio;
 import ru.iothub.jef.examples.Example;
 import ru.iothub.jef.examples.ExampleExecutor;
 import ru.iothub.jef.mcu.core.boards.BoardPin;
-import ru.iothub.jef.mcu.core.boards.BoardPinState;
 import ru.iothub.jef.mcu.core.boards.rpi.RaspberryPi4B;
 
 import java.io.IOException;
@@ -25,21 +24,21 @@ public class GpioPinFunctions implements Example {
         ExampleExecutor.readLine();
     }
 
-    @Override
-    public void showIntro() {
-        System.out.println("This example show current board pin functions");
-    }
-
     private static void writePin(RaspberryPi4B board, int i) {
         BoardPin pin = board.getPin(i);
         String cpuPin = pinToString(pin.getCpuPinNumber());
-        System.out.printf(" | %2d | %3s | %8s | %16s | %1s | %-88s |\n",
+        String functionName = pin.getPinFunctionName();
+//        System.out.println("functionName = " + functionName + " length:" + functionName.length());
+//        functionName = functionName + " ".repeat(16 - functionName.length());
+
+        String pinInOut = getPinInOut(pin.getPinInfo());
+        System.out.printf(" | %2d | %3s | %8s | %16s | %1s |\n",
                 i,
                 cpuPin,
                 pin.getName(),
-                pin.getPinFunctionName(),
-                getPinInOut(pin.digitalRead()),
-                listToComaSeparatedString(new ArrayList<>()/*pin.getPingFunctionNames()*/)
+                functionName,
+                pinInOut/*,
+                listToComaSeparatedString(new ArrayList<>()*//*pin.getPingFunctionNames()*/
         );
     }
 
@@ -48,28 +47,36 @@ public class GpioPinFunctions implements Example {
     }
 
     private static void showHeader() {
-        System.out.print(" +----+-----+----------+------------------+---+------------------------------------------------------------------------------------------+\n");
-        System.out.print(" | Pi | BCM |   Name   |        Mode      | V |                                        Functions                                         |\n");
-        System.out.print(" +----+-----+----------+------------------+---+------------------------------------------------------------------------------------------+\n");
+        System.out.print(" +----+-----+----------+------------------+---+\n");
+        System.out.print(" | Pi | BCM |   Name   |        Mode      | V |\n");
+        System.out.print(" +----+-----+----------+------------------+---+\n");
     }
 
-    private static String listToComaSeparatedString(List<String> names) {
+/*    private static String listToComaSeparatedString(List<String> names) {
         StringJoiner joiner = new StringJoiner(" : ");
         for (String item : names) {
             joiner.add(item);
         }
         return joiner.toString();
-    }
+    }*/
 
-    private static String getPinInOut(BoardPinState val) {
-        switch (val) {
+    private static String getPinInOut(BoardPin.BoardPinInfo val) {
+        if (val.isDummyPin()) return "-";
+        if (val.isActiveLow()) return "0";
+        return "1";
+        /*switch (val) {
             case NOT_SET:
                 return "-";
             case LOW:
                 return "0";
             default:
                 return "1";
-        }
+        }*/
+    }
+
+    @Override
+    public void showIntro() {
+        System.out.println("This example show current board pin functions");
     }
 
     @Override

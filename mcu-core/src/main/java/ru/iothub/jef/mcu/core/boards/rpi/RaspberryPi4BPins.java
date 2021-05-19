@@ -5,8 +5,8 @@ import ru.iothub.jef.linux.gpio.GpioPin;
 import ru.iothub.jef.mcu.core.boards.BoardPin;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public final class RaspberryPi4BPins {
@@ -53,7 +53,7 @@ public final class RaspberryPi4BPins {
                 new BoardPin(39, "Ground", null),
                 new BoardPin(40, "GPIO21", getPin(21)),
         };
-        return new ArrayList<>(Arrays.asList(pins));
+        return Collections.unmodifiableList(Arrays.asList(pins));
     }
 
     private static GpioPin getPin(int number) throws IOException {

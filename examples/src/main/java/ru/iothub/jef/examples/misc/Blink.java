@@ -59,7 +59,7 @@ public class Blink implements Example {
     public void execute() throws Exception {
         String path = "/dev/gpiochip0";
         int pinNumber = 21;
-        GpioPin pin = GpioManager.getPin(path, pinNumber, GpioPin.Direction.OUTPUT);
+        GpioPin pin = GpioManager.getPin(path, pinNumber);
         pin.setDirection(GpioPin.Direction.OUTPUT);
         //PinCtrl.pinMode(path, pin, PinCtrl.Mode.OUTPUT);
 
