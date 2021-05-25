@@ -54,8 +54,8 @@ Features
 * Ability to access devices over SPI interface
 * Ability to access devices over I2C interface
 * Ability to access devices over Serial interface
-* Direct access to GPIO over memory (RPi-4 only supported at this moment)
-* Ability to compile you code to JVM packages and Native binaries (commercial only) without 
+* Ability to access GPIO over Linux GPIO interface
+* Ability to compile you code to JVM packages and Native binaries (commercial version only) without 
   any code modification 
 
 Community and Support
