@@ -21,14 +21,12 @@ public class RaspberryPi4B extends Board {
 
     private final List<SpiBus> spis;
     private final List<I2CBus> i2cs;
-    private List<BoardPin> pins;
+    private final List<BoardPin> pins;
 
     public RaspberryPi4B() throws IOException {
         spis = initSPI();
         i2cs = initI2C();
-
-        //PinSet set = PinSet.getInstance(GPIO_MAPPING, pinout);
-        this.pins = initGPIO();
+        pins = initGPIO();
     }
 
     private List<BoardPin> initGPIO() throws IOException {
@@ -46,7 +44,6 @@ public class RaspberryPi4B extends Board {
     }
 
     private List<SpiBus> initSPI() throws NativeIOException {
-        final List<SpiBus> spis;
         List<SpiBus> ss = new ArrayList<>();
         if (new File("/dev/spidev0.0").exists()) {
             ss.add(
