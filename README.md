@@ -24,7 +24,7 @@ without any code modification.
 
 Projects Using JEF
 ==================
-JEF is very young library. If you're using JNA, feel free 
+JEF is very young library. If you're using JEF, feel free 
 to [tell us about it](mailto:support@iot-hub.ru).  
 Include some details about your company, project name, purpose and size and tell us 
 how you use the library.
@@ -40,7 +40,7 @@ If your platform is supported by [libffi](http://en.wikipedia.org/wiki/Libffi), 
 are you can build JEF for it.
 
 If your platform is supported by [GraalVM Native Image Compiler](https://github.com/graalvm/graalvm-ce-builds/releases/), 
-then chances are you can build JEF binaries images for these platforms...
+then chances are you can build JEF binaries images for these platforms... (commercial version only)
 
 Download
 ========
