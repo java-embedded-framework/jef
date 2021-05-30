@@ -14,13 +14,22 @@ JEF provides Java programs easy high level access directly from code
 to hardware interfaces like [SPI](https://en.wikipedia.org/wiki/Serial_Peripheral_Interface), 
 [I2C](https://ru.wikipedia.org/wiki/I%C2%B2C), [Serial](https://en.wikipedia.org/wiki/Serial_port), 
 [GPIO](https://en.wikipedia.org/wiki/General-purpose_input/output) or 
-[One Wire](https://en.wikipedia.org/wiki/1-Wire) interfaces without writing 
-anything except Java code - no JNI or native additional code is required. This functionality is comparable to 
-Linux like platforms.
+[One Wire](https://en.wikipedia.org/wiki/1-Wire) interfaces **without writing 
+anything except Java code** - no JNI or native additional code is required. 
+This functionality is comparable to Linux like platforms.
 
 JEF allows you to create pure java based system only in Java or compile you applications 
 to small(10+ megabytes) pure native binaries(C++ like ) for 64-bits platforms (commercial version only) 
 without any code modification. 
+
+Project Modules
+==================
+
+* **linux-core** - API for access to POSIX functions and protocols via Java
+* **mcu-core** - Hi level wrapper for linux-core for Raspberry Pi boards
+* **device-library** - Some 'drivers' implementation for devices
+* **examples** - usage examples
+
 
 Projects Using JEF
 ==================
@@ -82,8 +91,4 @@ What is planned in future releases?
 * Refactoring and improvements based on community feedbacks
 * Migration to [Project Panama](https://openjdk.java.net/projects/panama/) from [Java Native Access](https://github.com/java-native-access/jna) for Java 16+
 * Add additional devices support in device library
-* Add support for other devices based on BCM2711 chipset (CM4/CM4 lite/400)
-* Add support for other Broadcom chipsets like BCM2835(RPi 1/2/3/Zero) and BCM2837(RPi 2B/3B/CM3)
-* Add support for Allwinner chipsets (A63/A64/A133 as first) and boards.
-* Integration with Quarkus
-* Integration with Spring
+* Add support for other chipsets/boards (Orange Pi/Banana Pi/Olimex) in mcu-core module.
