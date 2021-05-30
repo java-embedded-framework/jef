@@ -31,45 +31,46 @@
 
 package ru.iothub.jef.mcu.core.boards.rpi;
 
-import ru.iothub.jef.mcu.core.boards.Board;
-import ru.iothub.jef.mcu.core.boards.BoardLoader;
+import ru.iothub.jef.linux.i2c.I2CBus;
+import ru.iothub.jef.linux.spi.SpiBus;
+import ru.iothub.jef.linux.spi.SpiMode;
+import ru.iothub.jef.mcu.core.boards.BoardPin;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Properties;
 
-// https://elinux.org/RPi_HardwareHistory
-public class Rpi4BoardsLoader implements BoardLoader {
-    private final static String HW_KEY = "Hardware";
-    private final static String HW_VALUE = "BCM2835";
-    private final static String REV_KEY = "Revision";
-
-    private final static List<String> REV_VALUES = new ArrayList<>() {
-        {
-            add("a03111");
-            add("b03111");
-            add("b03112");
-            add("b03114");
-            add("c03111");
-            add("c03112");
-            add("c03114");
-            add("d03114");
-        }
-    };
-
-    @Override
-    public boolean acceptCpuInfo(Properties props) {
-        String hw = props.getProperty(HW_KEY);
-        if (!HW_VALUE.equals(hw)) {
-            return false;
-        }
-        String rev = props.getProperty(REV_KEY);
-        return rev != null && REV_VALUES.contains(rev);
+class RaspberryPiRev1Board extends RaspberryPiAbstractBoard {
+    public RaspberryPiRev1Board() throws IOException {
+        super();
     }
 
     @Override
-    public Board create() throws IOException {
-        return new RaspberryPi4B();
+    protected List<I2CBus> initI2C() throws IOException {
+        final List<I2CBus> i2cs = new ArrayList<>();
+        if (new File("/dev/i2c-1").exists()) {
+            i2cs.add(
+                    new I2CBus("/dev/i2c-1")
+            );
+        }
+        return Collections.unmodifiableList(i2cs);
+    }
+
+    @Override
+    protected List<SpiBus> initSPI() throws IOException {
+        List<SpiBus> ss = new ArrayList<>();
+        if (new File("/dev/spidev0.0").exists()) {
+            ss.add(
+                    new SpiBus("/dev/spidev0.0", 500000, SpiMode.SPI_MODE_3, 8, 0)
+            );
+        }
+        return Collections.unmodifiableList(ss);
+    }
+
+    @Override
+    protected List<BoardPin> initGPIO() throws IOException {
+        return RaspberryPi26Rev1Pins.createPins();
     }
 }

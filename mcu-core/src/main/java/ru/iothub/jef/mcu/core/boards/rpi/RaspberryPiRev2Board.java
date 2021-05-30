@@ -29,36 +29,20 @@
  * Please contact sales@iot-hub.ru if you have any question.
  */
 
-package ru.iothub.jef.mcu.core.boards;
+package ru.iothub.jef.mcu.core.boards.rpi;
+
+import ru.iothub.jef.mcu.core.boards.BoardPin;
 
 import java.io.IOException;
-import java.util.ServiceLoader;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.List;
 
-@SuppressWarnings("unused")
-public class BoardManager {
-    private static Board instance = null;
-    private static final AtomicBoolean init = new AtomicBoolean(false);
-
-    public static Board getBoard() throws IOException {
-        if (!init.get() && instance == null) {
-            synchronized (BoardManager.class) {
-                if (!init.get() && instance == null) {
-                    instance = initBoard();
-                    init.set(true);
-                }
-            }
-        }
-        return instance;
+class RaspberryPiRev2Board extends RaspberryPiRev1Board {
+    public RaspberryPiRev2Board() throws IOException {
+        super();
     }
 
-    private static Board initBoard() throws IOException {
-        ServiceLoader<BoardLoader> sl = ServiceLoader.load(BoardLoader.class);
-        for (BoardLoader bl : sl) {
-            if (bl.accept()) {
-                return bl.create();
-            }
-        }
-        throw new IOException("Can't identify board");
+    @Override
+    protected List<BoardPin> initGPIO() throws IOException {
+        return RaspberryPi26Rev2Pins.createPins();
     }
 }

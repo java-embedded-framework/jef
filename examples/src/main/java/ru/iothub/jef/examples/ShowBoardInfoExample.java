@@ -29,36 +29,33 @@
  * Please contact sales@iot-hub.ru if you have any question.
  */
 
-package ru.iothub.jef.mcu.core.boards;
+package ru.iothub.jef.examples;
 
-import java.io.IOException;
-import java.util.ServiceLoader;
-import java.util.concurrent.atomic.AtomicBoolean;
+import ru.iothub.jef.mcu.core.boards.Board;
+import ru.iothub.jef.mcu.core.boards.BoardManager;
 
-@SuppressWarnings("unused")
-public class BoardManager {
-    private static Board instance = null;
-    private static final AtomicBoolean init = new AtomicBoolean(false);
+public class ShowBoardInfoExample implements Example {
+    private Board board;
 
-    public static Board getBoard() throws IOException {
-        if (!init.get() && instance == null) {
-            synchronized (BoardManager.class) {
-                if (!init.get() && instance == null) {
-                    instance = initBoard();
-                    init.set(true);
-                }
-            }
-        }
-        return instance;
+    @Override
+    public String getName() {
+        return "Show board info";
     }
 
-    private static Board initBoard() throws IOException {
-        ServiceLoader<BoardLoader> sl = ServiceLoader.load(BoardLoader.class);
-        for (BoardLoader bl : sl) {
-            if (bl.accept()) {
-                return bl.create();
-            }
-        }
-        throw new IOException("Can't identify board");
+    @Override
+    public void init() throws Exception {
+        board = BoardManager.getBoard();
+    }
+
+    @Override
+    public void execute() throws Exception {
+        System.out.println("Board is '" + board.getBoardInfo() + "'");
+        System.out.println("Please press <enter> to return to menu");
+        ExampleExecutor.readLine();
+    }
+
+    @Override
+    public void showIntro() {
+        System.out.println("This example show current board version");
     }
 }

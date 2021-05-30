@@ -2,18 +2,16 @@ package ru.iothub.jef.examples.gpio;
 
 import ru.iothub.jef.examples.Example;
 import ru.iothub.jef.examples.ExampleExecutor;
+import ru.iothub.jef.mcu.core.boards.Board;
+import ru.iothub.jef.mcu.core.boards.BoardManager;
 import ru.iothub.jef.mcu.core.boards.BoardPin;
-import ru.iothub.jef.mcu.core.boards.rpi.RaspberryPi4B;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringJoiner;
 
 public class GpioPinFunctions implements Example {
-    private RaspberryPi4B board;
+    private Board board;
 
-    private static void showPinsFunctions(RaspberryPi4B board) throws IOException {
+    private static void showPinsFunctions(Board board) throws IOException {
         int count = board.getPinCount();
         showHeader();
         for (int i = 1; i <= count; i++) {
@@ -24,12 +22,10 @@ public class GpioPinFunctions implements Example {
         ExampleExecutor.readLine();
     }
 
-    private static void writePin(RaspberryPi4B board, int i) {
+    private static void writePin(Board board, int i) {
         BoardPin pin = board.getPin(i);
         String cpuPin = pinToString(pin.getCpuPinNumber());
         String functionName = pin.getPinFunctionName();
-//        System.out.println("functionName = " + functionName + " length:" + functionName.length());
-//        functionName = functionName + " ".repeat(16 - functionName.length());
 
         String pinInOut = getPinInOut(pin.getPinInfo());
         System.out.printf(" | %2d | %3s | %8s | %16s | %1s |\n",
@@ -37,8 +33,7 @@ public class GpioPinFunctions implements Example {
                 cpuPin,
                 pin.getName(),
                 functionName,
-                pinInOut/*,
-                listToComaSeparatedString(new ArrayList<>()*//*pin.getPingFunctionNames()*/
+                pinInOut
         );
     }
 
@@ -52,26 +47,10 @@ public class GpioPinFunctions implements Example {
         System.out.print(" +----+-----+----------+------------------+---+\n");
     }
 
-/*    private static String listToComaSeparatedString(List<String> names) {
-        StringJoiner joiner = new StringJoiner(" : ");
-        for (String item : names) {
-            joiner.add(item);
-        }
-        return joiner.toString();
-    }*/
-
     private static String getPinInOut(BoardPin.BoardPinInfo val) {
         if (val.isDummyPin()) return "-";
         if (val.isActiveLow()) return "0";
         return "1";
-        /*switch (val) {
-            case NOT_SET:
-                return "-";
-            case LOW:
-                return "0";
-            default:
-                return "1";
-        }*/
     }
 
     @Override
@@ -86,7 +65,7 @@ public class GpioPinFunctions implements Example {
 
     @Override
     public void init() throws Exception {
-        board = new RaspberryPi4B();
+        board = BoardManager.getBoard();
     }
 
     @Override

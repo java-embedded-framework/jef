@@ -1,3 +1,34 @@
+/*
+ * Copyright (c) 2021, IOT-Hub.RU and/or its affiliates. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is dual-licensed: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License Version 3 as
+ * published by the Free Software Foundation. For the terms of this
+ * license, see <http://www.gnu.org/licenses/>.
+ *
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public
+ * License Version 3 for more details (a copy is included in the LICENSE
+ * file that accompanied this code).
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * version 3 along with this work; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * Please contact support@iot-hub.ru or visit www.iot-hub.ru if you need
+ * additional information or have any questions.
+ *
+ * You can be released from the requirements of the license by purchasing
+ * a Java Embedded Framework Commercial License. Buying such a license is
+ * mandatory as soon as you develop commercial activities involving the
+ * Java Embedded Framework software without disclosing the source code of
+ * your own applications.
+ *
+ * Please contact sales@iot-hub.ru if you have any question.
+ */
+
 package ru.iothub.jef.mcu.core.boards.rpi;
 
 import ru.iothub.jef.linux.gpio.GpioManager;
@@ -9,7 +40,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public final class RaspberryPi4BPins {
+final class RaspberryPi26Rev2Pins {
     static List<BoardPin> createPins() throws IOException {
         BoardPin[] pins = {
                 new BoardPin(1, "3.3v", null),
@@ -38,20 +69,6 @@ public final class RaspberryPi4BPins {
                 new BoardPin(24, "GPIO08", getPin(8)),
                 new BoardPin(25, "Ground", null),
                 new BoardPin(26, "GPIO07", getPin(7)),
-                new BoardPin(27, "GPIO00", getPin(0)),
-                new BoardPin(28, "GPIO01", getPin(1)),
-                new BoardPin(29, "GPIO05", getPin(5)),
-                new BoardPin(30, "Ground", null),
-                new BoardPin(31, "GPIO06", getPin(6)),
-                new BoardPin(32, "GPIO12", getPin(12)),
-                new BoardPin(33, "GPIO13", getPin(13)),
-                new BoardPin(34, "Ground", null),
-                new BoardPin(35, "GPIO19", getPin(19)),
-                new BoardPin(36, "GPIO16", getPin(16)),
-                new BoardPin(37, "GPIO26", getPin(26)),
-                new BoardPin(38, "GPIO20", getPin(20)),
-                new BoardPin(39, "Ground", null),
-                new BoardPin(40, "GPIO21", getPin(21)),
         };
         return Collections.unmodifiableList(Arrays.asList(pins));
     }

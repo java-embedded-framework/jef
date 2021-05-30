@@ -35,6 +35,6 @@ import java.io.IOException;
 import java.util.Properties;
 
 public interface BoardLoader {
-    boolean acceptCpuInfo(Properties props);
+    boolean accept();
     Board create() throws IOException;
 }

@@ -52,6 +52,7 @@ class ExampleManager {
         {
             add(new ExampleGroup("General") {
                 {
+                    add(new ShowBoardInfoExample());
                     add(new GpioPinFunctions());
                     add(new GpioReadAll());
 

@@ -3,11 +3,11 @@ package ru.iothub.jef.examples.gpio;
 import ru.iothub.jef.examples.Example;
 import ru.iothub.jef.examples.ExampleExecutor;
 import ru.iothub.jef.mcu.core.boards.Board;
+import ru.iothub.jef.mcu.core.boards.BoardManager;
 import ru.iothub.jef.mcu.core.boards.BoardPin;
-import ru.iothub.jef.mcu.core.boards.rpi.RaspberryPi4B;
 
 public class GpioReadAll implements Example {
-    private RaspberryPi4B board;
+    private Board board;
 
     private static void showPinsStatus(Board board) {
         int count = board.getPinCount();
@@ -44,7 +44,6 @@ public class GpioReadAll implements Example {
                 pin.getPinFunctionName(),
                 pin.getName(),
                 cpuPin
-                /*listToComaSeparatedString(pin.getPingFunctionNames())*/
         );
     }
 
@@ -56,14 +55,6 @@ public class GpioReadAll implements Example {
         if (val.isDummyPin()) return "-";
         if (val.isActiveLow()) return "0";
         return "1";
-        /*switch (val) {
-            case HIGH:
-                return "1";
-            case LOW:
-                return "0";
-            default:
-                return "-";
-        }*/
     }
 
     @Override
@@ -73,7 +64,7 @@ public class GpioReadAll implements Example {
 
     @Override
     public void init() throws Exception {
-        board = new RaspberryPi4B();
+        board = BoardManager.getBoard();
     }
 
     @Override

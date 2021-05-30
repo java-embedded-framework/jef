@@ -35,13 +35,14 @@ import ru.iothub.jef.examples.Example;
 import ru.iothub.jef.examples.ExampleExecutor;
 import ru.iothub.jef.linux.gpio.GpioManager;
 import ru.iothub.jef.linux.gpio.GpioPin;
-import ru.iothub.jef.mcu.core.boards.rpi.RaspberryPi4B;
+import ru.iothub.jef.mcu.core.boards.Board;
+import ru.iothub.jef.mcu.core.boards.BoardManager;
 
 public class Blink implements Example {
     public static final int PIN_NUMBER = 40;
     public static final int DELAY_TIME_MS = 1000;
 
-    private RaspberryPi4B board;
+    private Board board;
 
     @Override
     public String getName() {
@@ -50,7 +51,7 @@ public class Blink implements Example {
 
     @Override
     public void init() throws Exception {
-        board = new RaspberryPi4B();
+        board = BoardManager.getBoard();
         System.out.println("Please connect LED to PIN-" + PIN_NUMBER + " press <enter> to continue");
         ExampleExecutor.readLine();
     }
