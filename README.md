@@ -22,6 +22,28 @@ JEF allows you to create pure java based system only in Java or compile you appl
 to small(10+ megabytes) pure native binaries(C++ like ) for 64-bits platforms (commercial version only) 
 without any code modification. 
 
+Supported Platforms
+===================
+JEF will build on most linux-like platforms with a reasonable set of GNU tools and a JDK.
+
+If your platform is supported by [libffi](http://en.wikipedia.org/wiki/Libffi), then chances
+are you can build JEF for it.
+
+If your platform is supported by [GraalVM Native Image Compiler](https://github.com/graalvm/graalvm-ce-builds/releases/),
+then chances are you can build JEF binaries images for these platforms... (commercial version only)
+
+System requirements
+===================
+* Linux kernel 4.8+
+* Java 1.8+
+* Maven 3+
+
+Using the Library
+=================
+* [Getting Started](GettingStarted.md)
+
+
+
 Project Modules
 ==================
 
@@ -40,16 +62,6 @@ how you use the library.
 
 There are also a number of examples and projects within the `examples` directory of the JEF 
 project itself.
-
-Supported Platforms
-===================
-JEF will build on most linux-like platforms with a reasonable set of GNU tools and a JDK.
-
-If your platform is supported by [libffi](http://en.wikipedia.org/wiki/Libffi), then chances 
-are you can build JEF for it.
-
-If your platform is supported by [GraalVM Native Image Compiler](https://github.com/graalvm/graalvm-ce-builds/releases/), 
-then chances are you can build JEF binaries images for these platforms... (commercial version only)
 
 Download
 ========
@@ -74,9 +86,6 @@ Issues can be submitted [here on Github](https://github.com/java-embedded-framew
 
 For commercial support, please contact [here](mailto:sales@iot-hub.ru).
 
-Using the Library
-=================
-* [Getting Started](GettingStarted.md)
 
 Contributing
 ============
