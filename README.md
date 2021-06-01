@@ -95,6 +95,13 @@ License
 =======
 Please see details [here](LICENSE)
 
+For vendors
+=======
+If you want to add your board support to framework or 
+add support of your devices to 
+[device library](https://github.com/java-embedded-framework/jef/tree/master/device-library/src/main/java/ru/iothub/jef/devices/library) 
+please contact to [support](mailto:support@iot-hub.ru)
+
 What is planned in future releases?
 =======
 * Refactoring and improvements based on community feedbacks
