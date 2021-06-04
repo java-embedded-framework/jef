@@ -114,7 +114,7 @@ public abstract class Termios implements NativeSupport {
 
     public static Termios getInstance() {
         if (instance == null && !initialized.get()) {
-            synchronized (Fcntl.class) {
+            synchronized (Termios.class) {
                 if (instance == null && !initialized.get()) {
                     instance = NativeBeanLoader.createContent(Termios.class);
                     initialized.set(true);

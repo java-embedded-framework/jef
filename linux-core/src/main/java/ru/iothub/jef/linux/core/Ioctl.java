@@ -47,7 +47,7 @@ public abstract class Ioctl extends IoctlBase implements NativeSupport {
 
     public static Ioctl getInstance() {
         if (instance == null && !initialized.get()) {
-            synchronized (Fcntl.class) {
+            synchronized (Ioctl.class) {
                 if (instance == null && !initialized.get()) {
                     instance = NativeBeanLoader.createContent(Ioctl.class);
                     instance.initVariables();
