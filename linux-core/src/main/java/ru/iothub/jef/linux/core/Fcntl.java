@@ -56,6 +56,9 @@ public abstract class Fcntl implements NativeSupport {
 
     public abstract void write(FileHandle fd, byte[] buffer, int size) throws NativeIOException;
 
+    public abstract long lseek(FileHandle fd, long offset, Whence whence);
+
+
     protected static int IOFlagsMask(EnumSet<IOFlags> flags) {
         int result = 0;
 
@@ -76,6 +79,22 @@ public abstract class Fcntl implements NativeSupport {
             }
         }
         return instance;
+    }
+
+    public enum Whence {
+        SEEK_SET(0),
+        SEEK_CUR(1),
+        SEEK_END(2);
+
+        private final int value;
+
+        Whence(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
     }
 
 }

@@ -110,6 +110,11 @@ public class FcntlJna extends Fcntl {
     }
 
     @Override
+    public long lseek(FileHandle fd, long offset, Whence whence) {
+        return Delegate.lseek(fd.getHandle(), offset, whence.getValue());
+    }
+
+    @Override
     public boolean isNativeSupported() {
         return false;
     }
@@ -129,5 +134,7 @@ public class FcntlJna extends Fcntl {
         public static native int read(int fd, byte[] buffer, int size);
 
         public static native int write(int fd, byte[] buffer, int size);
+
+        public static native long lseek(int fd, long offset, int whence);
     }
 }
