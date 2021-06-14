@@ -32,6 +32,11 @@ are you can build JEF for it.
 If your platform is supported by [GraalVM Native Image Compiler](https://github.com/graalvm/graalvm-ce-builds/releases/),
 then chances are you can build JEF binaries images for these platforms... (commercial version only)
 
+Supported boards
+===================
+Please see details [here](PLATFORMS.md)
+
+
 System requirements
 ===================
 * Linux kernel 4.8+
@@ -41,7 +46,6 @@ System requirements
 Using the Library
 =================
 * [Getting Started](GettingStarted.md)
-
 
 
 Project Modules
