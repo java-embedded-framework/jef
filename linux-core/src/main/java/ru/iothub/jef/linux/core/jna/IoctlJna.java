@@ -188,7 +188,7 @@ public class IoctlJna extends Ioctl {
 
     @Override
     public int ioctl(FileHandle fd, SpiIocTransfer ptr) throws NativeIOException {
-        log.log(Level.FINEST, () -> String.format("ioctl.spi fd is '%d' data is '%s'", fd.getHandle(), ptr));
+        log.log(Level.INFO, () -> String.format("ioctl.spi fd is '%d' data is '%s'", fd.getHandle(), ptr));
 
         ByteBuffer txBuffer = ptr.getTxBuffer();
         ByteBuffer rxBuffer = ptr.getRxBuffer();
@@ -198,19 +198,20 @@ public class IoctlJna extends Ioctl {
         int txRxSize = txSize + rxSize;
 
         Memory txRxMemory = new Memory(txRxSize);
-        log.log(Level.FINEST, () -> String.format("dump input array \n%s", dump(txBuffer)));
+        log.log(Level.INFO, () -> String.format("dump input array \n%s", dump(txBuffer)));
 
         txRxMemory.write(0, LinuxUtils.toBytes(txBuffer), 0, txBuffer.capacity());
 
-        log.log(Level.FINEST, () -> String.format("pinned array \n%s", dump(txRxMemory.getByteBuffer(0, txRxSize))));
+        log.log(Level.INFO, () -> String.format("pinned array \n%s", dump(txRxMemory.getByteBuffer(0, txRxSize))));
 
         SpiIOCTransfer spi = new SpiIOCTransfer(txRxMemory, ptr);
+        log.log(Level.INFO, () -> String.format("dump spi\n%s", dump(spi.getPointer().getByteBuffer(0, spi.size()))));
 
         long ioc_message = SPI_IOC_MESSAGE(1);
-        log.log(Level.FINEST, () -> String.format("ioc_message is '%s'", ioc_message));
+        log.log(Level.INFO, () -> String.format("ioc_message is '%s'", ioc_message));
 
         int result = Delegate.ioctl(fd.getHandle(), new NativeLong(ioc_message, true), spi);
-        log.log(Level.FINEST, () -> String.format("ioctl result is '%s'", result));
+        log.log(Level.INFO, () -> String.format("ioctl result is '%s'", result));
 
         checkIOResult("ioctl:SPI", result);
 

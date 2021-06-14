@@ -49,7 +49,7 @@ public class W25xFlashExample implements Example {
 
     @Override
     public void init() throws Exception {
-        System.out.println("Please connect W25x to SPI-1 and press <enter> to continue");
+        System.out.println("Please connect W25x to SPI-0 and press <enter> to continue");
         ExampleExecutor.readLine();
     }
 

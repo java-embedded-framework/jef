@@ -110,7 +110,7 @@ public class RpiBoardsLoader implements BoardLoader {
             board.setBoardInfo(info);
             return board;
         } catch (Exception e) {
-            throw new IOException(e);
+            throw new IOException("board provider not implemented for " + info.getModel());
         }
     }
 }

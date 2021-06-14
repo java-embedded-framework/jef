@@ -43,7 +43,7 @@ public class GpioPinFunctions implements Example {
 
     private static void showHeader() {
         System.out.print(" +----+-----+----------+------------------+---+\n");
-        System.out.print(" | Pi | BCM |   Name   |        Mode      | V |\n");
+        System.out.print(" | Pi | CPU |   Name   |        Mode      | V |\n");
         System.out.print(" +----+-----+----------+------------------+---+\n");
     }
 

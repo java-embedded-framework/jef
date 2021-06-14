@@ -1,1 +1,2 @@
 ru.iothub.jef.mcu.core.boards.rpi.RpiBoardsLoader
+ru.iothub.jef.mcu.core.boards.opi.OrangePiBoardsLoader

@@ -21,7 +21,7 @@ public class GpioReadAll implements Example {
 
     private static void showHeader() {
         System.out.print(" +-----+----------+------------------+---+----++----+---+------------------+----------+-----+\n");
-        System.out.print(" | BCM |   Name   |       Mode       | V | Physical | V |       Mode       |   Name   | BCM |\n");
+        System.out.print(" | CPU |   Name   |       Mode       | V | Physical | V |       Mode       |   Name   | CPU |\n");
         System.out.print(" +-----+----------+------------------+---+----++----+---+------------------+----------+-----+\n");
     }
 
