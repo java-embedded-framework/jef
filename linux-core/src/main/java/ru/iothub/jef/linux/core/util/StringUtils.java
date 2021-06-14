@@ -32,6 +32,7 @@
 package ru.iothub.jef.linux.core.util;
 
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 
 public class StringUtils {
     private final static int DEFAULT_BUFF_SIZE =
@@ -99,7 +100,7 @@ public class StringUtils {
             for (int j = 0; j < capacity; j++) {
                 result.append(String.format("%02X ", buffer.get(i + j)));
             }
-            result.append("   ".repeat(Math.max(0, spaces)));
+            result.append(repeat("   ", Math.max(0, spaces)));
             result.append("|\n");
         }
         result
@@ -108,5 +109,37 @@ public class StringUtils {
 
         buffer.position(position);
         return result.toString();
+    }
+
+    public static String repeat(String s, int count) {
+        byte[] value = s.getBytes();
+        if (count < 0) {
+            throw new IllegalArgumentException("count is negative: " + count);
+        }
+        if (count == 1) {
+            return s;
+        }
+        final int len = value.length;
+        if (len == 0 || count == 0) {
+            return "";
+        }
+        if (len == 1) {
+            final byte[] single = new byte[count];
+            Arrays.fill(single, value[0]);
+            return new String(single);
+        }
+        if (Integer.MAX_VALUE / count < len) {
+            throw new OutOfMemoryError("Repeating " + len + " bytes String " + count +
+                    " times will produce a String exceeding maximum size.");
+        }
+        final int limit = len * count;
+        final byte[] multiple = new byte[limit];
+        System.arraycopy(value, 0, multiple, 0, len);
+        int copied = len;
+        for (; copied < limit - copied; copied <<= 1) {
+            System.arraycopy(multiple, 0, multiple, copied, copied);
+        }
+        System.arraycopy(multiple, 0, multiple, copied, limit - copied);
+        return new String(multiple);
     }
 }

@@ -29,46 +29,27 @@
  * Please contact sales@iot-hub.ru if you have any question.
  */
 
-package ru.iothub.jef.linux.core.types;
+package ru.iothub.jef.linux.core;
 
-import java.nio.ByteBuffer;
-import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-public class SmbusData {
-    private byte[] buf;
+public abstract class Socket implements NativeSupport {
+    private static final AtomicBoolean initialized = new AtomicBoolean(false);
+    private static Socket instance = null;
 
-    public SmbusData() {
-        buf = new byte[34];
+    public static Socket getInstance() {
+        if (instance == null && !initialized.get()) {
+            synchronized (Socket.class) {
+                if (instance == null && !initialized.get()) {
+                    instance = NativeBeanLoader.createContent(Socket.class);
+                    initialized.set(true);
+                }
+            }
+        }
+        return instance;
     }
 
-    public byte getByte() {
-        return buf[0];
-    }
+    public abstract int getsockopt(int sockfd, int level, int optname, Bluetooth.HciFilter optval);
 
-    public void setByte(byte b) {
-        buf[0] = b;
-    }
-
-    public short getWord() {
-        return ByteBuffer.wrap(buf).get(0);
-    }
-
-    public void setWord(short word) {
-        ByteBuffer.wrap(buf).putShort(0, word);
-    }
-
-    public byte[] getBlock() {
-        return buf;
-    }
-
-    public void setBlock(byte[] buf) {
-        this.buf = buf;
-    }
-
-    @Override
-    public String toString() {
-        return "SmbusData{" +
-                "buf=" + Arrays.toString(buf) +
-                '}';
-    }
+    public abstract int setsockopt(int sockfd, int level, int optname, Bluetooth.HciFilter optval);
 }

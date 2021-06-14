@@ -31,7 +31,10 @@
 
 package ru.iothub.jef.linux.core;
 
+import ru.iothub.jef.linux.core.util.StringUtils;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -148,7 +151,7 @@ public class RuntimePermissionsChecker {
 
     private static void dump() {
         StringBuilder builder = new StringBuilder();
-        String header = "*".repeat(maxStringLength + 4);
+        String header = StringUtils.repeat("*", maxStringLength + 4);
 
         builder.append(header).append("\n");
         for (String s : lines) {
@@ -165,7 +168,7 @@ public class RuntimePermissionsChecker {
 
     private static String spaces(int length) {
         int max = maxStringLength - length;
-        return " ".repeat(Math.max(0, max));
+        return StringUtils.repeat(" ", Math.max(0, max));
     }
 
     private static String write(String s) {

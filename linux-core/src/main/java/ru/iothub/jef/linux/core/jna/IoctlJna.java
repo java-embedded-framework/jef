@@ -159,7 +159,7 @@ public class IoctlJna extends Ioctl {
         ioctlData.clear();
         i2cSmbusData.clear();
 
-        ByteBuffer block = ptr.getData().getBlock();
+        ByteBuffer block = ByteBuffer.wrap(ptr.getData().getBlock());
 
         log.log(Level.FINEST, "ioctl.smbus input block: ");
         log.log(Level.FINEST, ()-> dump(block));

@@ -29,46 +29,42 @@
  * Please contact sales@iot-hub.ru if you have any question.
  */
 
-package ru.iothub.jef.linux.core.types;
+package ru.iothub.jef.linux.core.jna;
 
-import java.nio.ByteBuffer;
-import java.util.Arrays;
+import com.sun.jna.Native;
+import com.sun.jna.Structure;
+import ru.iothub.jef.linux.core.Bluetooth;
+import ru.iothub.jef.linux.core.Socket;
 
-public class SmbusData {
-    private byte[] buf;
-
-    public SmbusData() {
-        buf = new byte[34];
-    }
-
-    public byte getByte() {
-        return buf[0];
-    }
-
-    public void setByte(byte b) {
-        buf[0] = b;
-    }
-
-    public short getWord() {
-        return ByteBuffer.wrap(buf).get(0);
-    }
-
-    public void setWord(short word) {
-        ByteBuffer.wrap(buf).putShort(0, word);
-    }
-
-    public byte[] getBlock() {
-        return buf;
-    }
-
-    public void setBlock(byte[] buf) {
-        this.buf = buf;
+public class SocketJna extends Socket {
+    @Override
+    public boolean isNativeSupported() {
+        return false;
     }
 
     @Override
-    public String toString() {
-        return "SmbusData{" +
-                "buf=" + Arrays.toString(buf) +
-                '}';
+    public int getsockopt(int sockfd, int level, int optname, Bluetooth.HciFilter optval) {
+        BluetoothJna.hci_filter val = new BluetoothJna.hci_filter(optval);
+        int result = Delegate.getsockopt(sockfd, level, optname, val, val.size());
+        val.fill(optval);
+        return result;
+    }
+
+    @Override
+    public int setsockopt(int sockfd, int level, int optname, Bluetooth.HciFilter optval) {
+        BluetoothJna.hci_filter val = new BluetoothJna.hci_filter(optval);
+        int result = Delegate.setsockopt(sockfd, level, optname, val, val.size());
+        val.fill(optval);
+        return result;
+    }
+
+    static class Delegate {
+        static {
+            Native.register("c");
+        }
+
+        public static native int getsockopt(int sockfd, int level, int optname, Structure optval, int optlen);
+
+        public static native int setsockopt(int sockfd, int level, int optname, Structure optval, int optlen);
     }
 }

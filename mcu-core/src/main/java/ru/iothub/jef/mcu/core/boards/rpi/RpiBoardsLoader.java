@@ -47,7 +47,7 @@ public class RpiBoardsLoader implements BoardLoader {
     private final static String CPU_INFO_PATH = "/proc/cpuinfo";
     private final static String REV_KEY = "Revision";
 
-    private final static Map<String, RpiBoardInfo> mapping = new HashMap<>() {
+    private final static Map<String, RpiBoardInfo> mapping = new HashMap<String, RpiBoardInfo>() {
         {
             put(A_PLUS_1_1.getCode(), A_PLUS_1_1);
             put(B_PLUS_1_2.getCode(), B_PLUS_1_2);

@@ -31,6 +31,7 @@
 
 package ru.iothub.jef.examples;
 
+import ru.iothub.jef.examples.bluetooth.SimpleScanExample;
 import ru.iothub.jef.examples.gpio.GpioPinFunctions;
 import ru.iothub.jef.examples.gpio.GpioReadAll;
 import ru.iothub.jef.examples.i2c.BCM280Example;
@@ -48,7 +49,7 @@ import java.util.List;
  * Static holder for examples
  */
 class ExampleManager {
-    private final static List<ExampleGroup> groups = Collections.unmodifiableList(new ArrayList<>() {
+    private final static List<ExampleGroup> groups = Collections.unmodifiableList(new ArrayList<ExampleGroup>() {
         {
             add(new ExampleGroup("General") {
                 {
@@ -89,6 +90,12 @@ class ExampleManager {
                     add(new SerialExample());
                 }
             });
+
+            /*add(new ExampleGroup("Bluetooth") {
+                {
+                    add(new SimpleScanExample());
+                }
+            });*/
         }
     });
 
