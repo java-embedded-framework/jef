@@ -3,6 +3,15 @@
 * Orange Pi Zero Plus support added
 * Orange Pi Zero 2 Plus H3/H5 added
 
+**Fixes:**
+
+* SPI works in 64 bits for Winbound flash but not working for 32 bits - fixed
+
+**Tested:**
+
+Fully compliance Raspberry Pi 32/64 bits boards
+
+
 ### 14 June 2021
 
 **Changes:**

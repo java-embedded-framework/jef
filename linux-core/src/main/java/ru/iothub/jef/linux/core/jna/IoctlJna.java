@@ -188,7 +188,7 @@ public class IoctlJna extends Ioctl {
 
     @Override
     public int ioctl(FileHandle fd, SpiIocTransfer ptr) throws NativeIOException {
-        log.log(Level.INFO, () -> String.format("ioctl.spi fd is '%d' data is '%s'", fd.getHandle(), ptr));
+        log.log(Level.FINEST, () -> String.format("ioctl.spi fd is '%d' data is '%s'", fd.getHandle(), ptr));
 
         ByteBuffer txBuffer = ptr.getTxBuffer();
         ByteBuffer rxBuffer = ptr.getRxBuffer();
@@ -198,20 +198,20 @@ public class IoctlJna extends Ioctl {
         int txRxSize = txSize + rxSize;
 
         Memory txRxMemory = new Memory(txRxSize);
-        log.log(Level.INFO, () -> String.format("dump input array \n%s", dump(txBuffer)));
+        log.log(Level.FINEST, () -> String.format("dump input array \n%s", dump(txBuffer)));
 
         txRxMemory.write(0, LinuxUtils.toBytes(txBuffer), 0, txBuffer.capacity());
 
-        log.log(Level.INFO, () -> String.format("pinned array \n%s", dump(txRxMemory.getByteBuffer(0, txRxSize))));
+        log.log(Level.FINEST, () -> String.format("pinned array \n%s", dump(txRxMemory.getByteBuffer(0, txRxSize))));
 
         SpiIOCTransfer spi = new SpiIOCTransfer(txRxMemory, ptr);
-        log.log(Level.INFO, () -> String.format("dump spi\n%s", dump(spi.getPointer().getByteBuffer(0, spi.size()))));
+        log.log(Level.FINEST, () -> String.format("dump spi\n%s", spi.toString(true)));
 
         long ioc_message = SPI_IOC_MESSAGE(1);
-        log.log(Level.INFO, () -> String.format("ioc_message is '%s'", ioc_message));
+        log.log(Level.FINEST, () -> String.format("ioc_message is '%s'", ioc_message));
 
         int result = Delegate.ioctl(fd.getHandle(), new NativeLong(ioc_message, true), spi);
-        log.log(Level.INFO, () -> String.format("ioctl result is '%s'", result));
+        log.log(Level.FINEST, () -> String.format("ioctl result is '%s'", result));
 
         checkIOResult("ioctl:SPI", result);
 
@@ -360,8 +360,8 @@ public class IoctlJna extends Ioctl {
 
     @Structure.FieldOrder({"txBuff", "rxBuff", "len", "speedHz", "delayMicros", "bitsPerWord", "csChange", "txNBits", "rxNBits", "pad"})
     public static class SpiIOCTransfer extends Structure {
-        public NativeLong txBuff;
-        public NativeLong rxBuff;
+        public long txBuff;
+        public long rxBuff;
         public int len;
         public int speedHz;
         public short delayMicros;
@@ -385,7 +385,7 @@ public class IoctlJna extends Ioctl {
         }
 
         public SpiIOCTransfer(Memory txRxMemory, int length, int speed, short delay, byte bitsPerWord) {
-            NativeLong txRxPointer = new NativeLong(Pointer.nativeValue(txRxMemory));
+            long txRxPointer = Pointer.nativeValue(txRxMemory);
             this.txBuff = txRxPointer;
             this.rxBuff = txRxPointer;
             this.len = length;
