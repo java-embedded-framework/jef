@@ -56,9 +56,9 @@ enum OrangePiBoardInfo {
     ORANGE_PI_WIN("Orange Pi Win", "sun50iw1", "Allwinner A64 quad core 1GB/2GB RAM SoC GBE WiFi/BT", null),
     ORANGE_PI_ZERO("Orange Pi Zero", "sun8i", "Allwinner H2+ quad core 256/512MB RAM SoC WiFi SPI", OrangePiZeroBoard.class),
     ORANGE_PI_ZERO_2("Orange Pi Zero2", "sun50iw6", "Allwinner H616 quad core 512MB/1GB RAM SoC WiFi SPI USB-C", null),
-    ORANGE_PI_ZERO_PLUS("Orange Pi Zero Plus", "sun50iw2", "Allwinner H5 quad core 512MB RAM SoC GBE WiFi SPI", null),
-    ORANGE_PI_ZERO_PLUS_2("Orange Pi Zero Plus 2", "sun8i","Allwinner H3 quad core 512MB RAM SoC Wi-Fi/BT", null),
-    ORANGE_PI_ZERO_PLUS_2A("Orange Pi Zero Plus 2", "sun50iw2", "Allwinner H5 quad core 512MB RAM SoC Wi-Fi/BT", null);
+    ORANGE_PI_ZERO_PLUS("Orange Pi Zero Plus", "sun50iw2", "Allwinner H5 quad core 512MB RAM SoC GBE WiFi SPI", OrangePiZeroBoard.class),
+    ORANGE_PI_ZERO_PLUS_2("Orange Pi Zero Plus 2", "sun8i","Allwinner H3 quad core 512MB RAM SoC Wi-Fi/BT", OrangePiZero2PlusBoard.class),
+    ORANGE_PI_ZERO_PLUS_2A("Orange Pi Zero Plus 2", "sun50iw2", "Allwinner H5 quad core 512MB RAM SoC Wi-Fi/BT", OrangePiZero2PlusBoard.class);
 
     private final String name;
     private final String family;

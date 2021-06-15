@@ -44,7 +44,7 @@ public class BoardPin {
                 name : pin.getName();
     }
 
-    private boolean isDummyPin() {
+    public boolean isDummyPin() {
         return pin == null;
     }
 

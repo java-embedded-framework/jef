@@ -73,8 +73,8 @@ Orange Pi
 |    Orange Pi Win    |    In Progress    |
 |    Orange Pi Zero    | **Supported**    |
 |    Orange Pi Zero2    |    In Progress    |
-|    Orange Pi Zero Plus    |    In Progress    |
-|    Orange Pi Zero Plus 2    |    In Progress    |
-|    Orange Pi Zero Plus 2    |    In Progress    |
+|    Orange Pi Zero Plus    |    **Supported**    |
+|    Orange Pi Zero 2 Plus H3    |    **Supported**    |
+|    Orange Pi Zero 2 Plus H5    |   **Supported**    |
 
 

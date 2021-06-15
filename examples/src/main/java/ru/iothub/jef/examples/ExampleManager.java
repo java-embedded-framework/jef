@@ -37,6 +37,7 @@ import ru.iothub.jef.examples.gpio.GpioReadAll;
 import ru.iothub.jef.examples.i2c.BCM280Example;
 import ru.iothub.jef.examples.i2c.I2CScanner;
 import ru.iothub.jef.examples.misc.Blink;
+import ru.iothub.jef.examples.misc.BlinkAll;
 import ru.iothub.jef.examples.onewire.DS18B20Example;
 import ru.iothub.jef.examples.serial.SerialExample;
 import ru.iothub.jef.examples.spi.W25xFlashExample;
@@ -63,6 +64,7 @@ class ExampleManager {
             add(new ExampleGroup("GPIO") {
                 {
                     add(new Blink());
+                    add(new BlinkAll());
                 }
             });
 
