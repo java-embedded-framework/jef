@@ -2,6 +2,18 @@
 * Support for Orange Pi Zero2 added
 * Support for Orange Pi Win added
 * Support for Orange Pi Prime added
+* Support for Orange Pi+ 2E added
+* Support for Orange Pi+ added
+* Support for Orange Pi PC + added
+* Support for Orange Pi Lite added
+* Support for Orange Pi One added
+* Support for Orange Pi R1 added
+* Support for Orange Pi PC2 added
+* Support for Orange Pi added
+* Support for Orange Pi Mini added
+* Support for Orange Pi Lite 2 added
+* Support for Orange Pi One+ added
+* Support for Orange Pi 3 added
 
 ### 15 June 2021
 * Example "Blink all PINs" implemented for GPIO test purposes

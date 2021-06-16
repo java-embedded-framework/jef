@@ -52,23 +52,23 @@ Orange Pi
 
 |    Model    |    Status    |
 |	-------------	|	-------------	|
-|    Orange Pi    |    In Progress    |
-|    Orange Pi R1    |    In Progress    |
-|    Orange Pi R1 Plus    |    In Progress    |
-|    Orange Pi RK3399    |    In Progress    |
-|    Orange Pi 2    |    In Progress    |
-|    Orange Pi 3    |    In Progress    |
-|    OrangePi 4    |    In Progress    |
-|    Orange Pi Lite    |    In Progress    |
-|    Orange Pi Lite 2    |    In Progress    |
-|    Orange Pi Mini    |    In Progress    |
-|    Orange Pi One    |    In Progress    |
-|    Orange Pi One+    |    In Progress    |
-|    Orange Pi PC    |    In Progress    |
-|    Orange Pi PC2    |    In Progress    |
-|    Orange Pi PC +    |    In Progress    |
-|    Orange Pi+    |    In Progress    |
-|    Orange Pi+ 2E    |    In Progress    |
+|    Orange Pi    |    **Supported**    |
+|    Orange Pi R1    |    **Supported**    |
+|    Orange Pi R1 Plus    |    Not Supported    |
+|    Orange Pi RK3399    |    Not Supported    |
+|    Orange Pi 2    |    **Supported**    |
+|    Orange Pi 3    |    **Supported**    |
+|    OrangePi 4    |    Not Supported    |
+|    Orange Pi Lite    |    **Supported**    |
+|    Orange Pi Lite 2    |    **Supported**    |
+|    Orange Pi Mini    |    **Supported**    |
+|    Orange Pi One    |    **Supported**    |
+|    Orange Pi One+    |    **Supported**    |
+|    Orange Pi PC    |    **Supported**    |
+|    Orange Pi PC2    |    **Supported**    |
+|    Orange Pi PC +    |    **Supported**    |
+|    Orange Pi+    |    **Supported**    |
+|    Orange Pi+ 2E    |    **Supported**    |
 |    Orange Pi Prime    |    **Supported**    |
 |    Orange Pi Win    |    **Supported**    |
 |    Orange Pi Zero    | **Supported**    |

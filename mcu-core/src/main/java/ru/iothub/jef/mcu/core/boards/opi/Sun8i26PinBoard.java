@@ -45,9 +45,9 @@ import java.util.List;
 
 
 // http://linux-sunxi.org/Xunlong_Orange_Pi_Zero
-class OrangePiZeroBoard extends OrangePiAbstractBoard {
+class Sun8i26PinBoard extends OrangePiAbstractBoard {
 
-    public OrangePiZeroBoard() throws IOException {
+    public Sun8i26PinBoard() throws IOException {
     }
 
     @Override
