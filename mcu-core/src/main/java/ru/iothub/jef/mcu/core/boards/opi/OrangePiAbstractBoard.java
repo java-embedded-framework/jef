@@ -35,10 +35,15 @@ import ru.iothub.jef.linux.gpio.GpioManager;
 import ru.iothub.jef.linux.gpio.GpioPin;
 import ru.iothub.jef.linux.i2c.I2CBus;
 import ru.iothub.jef.linux.spi.SpiBus;
+import ru.iothub.jef.linux.spi.SpiMode;
 import ru.iothub.jef.mcu.core.boards.Board;
 import ru.iothub.jef.mcu.core.boards.BoardPin;
+import ru.iothub.jef.mcu.core.boards.sunxi.BallToPin;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 abstract class OrangePiAbstractBoard extends Board {
@@ -55,9 +60,26 @@ abstract class OrangePiAbstractBoard extends Board {
 
     protected abstract List<BoardPin> initGPIO() throws IOException;
 
-    protected abstract List<I2CBus> initI2C() throws IOException;
+    protected List<I2CBus> initI2C() throws IOException {
+        final List<I2CBus> i2cs = new ArrayList<>();
 
-    protected abstract List<SpiBus> initSPI() throws IOException;
+        if (new File("/dev/i2c-2").exists()) {
+            i2cs.add(
+                    new I2CBus("/dev/i2c-2")
+            );
+        }
+        return Collections.unmodifiableList(i2cs);
+    }
+
+    protected List<SpiBus> initSPI() throws IOException {
+        List<SpiBus> ss = new ArrayList<>();
+        if (new File("/dev/spidev0.0").exists()) {
+            ss.add(
+                    new SpiBus("/dev/spidev0.0", 500000, SpiMode.SPI_MODE_3, 8, 0)
+            );
+        }
+        return Collections.unmodifiableList(ss);
+    }
 
     protected void setSpi(List<SpiBus> buses) {
         this.spis = buses;
@@ -104,4 +126,13 @@ abstract class OrangePiAbstractBoard extends Board {
     public String getBoardInfo() {
         return info.getName() + " " + info.getDescription();
     }
+
+    protected GpioPin getBoardPin(int number) throws IOException {
+        return GpioManager.getPin("/dev/gpiochip0", number);
+    }
+
+    protected GpioPin getBoardPin(char c, int number) throws IOException {
+        return getBoardPin(BallToPin.convert(c, number));
+    }
+
 }

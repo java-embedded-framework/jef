@@ -69,10 +69,10 @@ Orange Pi
 |    Orange Pi PC +    |    In Progress    |
 |    Orange Pi+    |    In Progress    |
 |    Orange Pi+ 2E    |    In Progress    |
-|    Orange Pi Prime    |    In Progress    |
-|    Orange Pi Win    |    In Progress    |
+|    Orange Pi Prime    |    **Supported**    |
+|    Orange Pi Win    |    **Supported**    |
 |    Orange Pi Zero    | **Supported**    |
-|    Orange Pi Zero2    |    In Progress    |
+|    Orange Pi Zero2    |    **Supported**    |
 |    Orange Pi Zero Plus    |    **Supported**    |
 |    Orange Pi Zero 2 Plus H3    |    **Supported**    |
 |    Orange Pi Zero 2 Plus H5    |   **Supported**    |
