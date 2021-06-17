@@ -36,8 +36,12 @@ import ru.iothub.jef.examples.Example;
 import ru.iothub.jef.examples.ExampleExecutor;
 import ru.iothub.jef.linux.spi.SpiBus;
 import ru.iothub.jef.linux.spi.SpiMode;
+import ru.iothub.jef.mcu.core.boards.Board;
+import ru.iothub.jef.mcu.core.boards.BoardManager;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.List;
 
 import static ru.iothub.jef.linux.core.LinuxUtils.dump;
 
@@ -55,7 +59,13 @@ public class W25xFlashExample implements Example {
 
     @Override
     public void execute() throws Exception {
-        SpiBus bus0 = new SpiBus(0, 500000, SpiMode.SPI_MODE_3, 8, 0);
+        Board board = BoardManager.getBoard();
+        List<SpiBus> spiBuses = board.getSpiBuses();
+        if(spiBuses.size() == 0) {
+            throw new IOException("I2C buses not enabled");
+        }
+
+        SpiBus bus0 = spiBuses.get(0);//new SpiBus(0, 500000, SpiMode.SPI_MODE_3, 8, 0);
         W25xFlash flash = new W25xFlash(bus0);
 
         int manufacturerID = flash.getManufacturerID();

@@ -31,14 +31,9 @@
 
 package ru.iothub.jef.mcu.core.boards.opi;
 
-import ru.iothub.jef.linux.i2c.I2CBus;
-import ru.iothub.jef.linux.spi.SpiBus;
-import ru.iothub.jef.linux.spi.SpiMode;
 import ru.iothub.jef.mcu.core.boards.BoardPin;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;

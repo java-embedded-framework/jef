@@ -35,8 +35,11 @@ import ru.iothub.jef.devices.library.bosch.bcm280.*;
 import ru.iothub.jef.examples.Example;
 import ru.iothub.jef.examples.ExampleExecutor;
 import ru.iothub.jef.linux.i2c.I2CBus;
+import ru.iothub.jef.mcu.core.boards.Board;
+import ru.iothub.jef.mcu.core.boards.BoardManager;
 
 import java.io.IOException;
+import java.util.List;
 
 public class BCM280Example implements Example {
     private static void setConfiguration(BMP280 bmp280) throws IOException {
@@ -75,7 +78,13 @@ public class BCM280Example implements Example {
 
     @Override
     public void execute() throws Exception {
-        I2CBus bus = new I2CBus(1);
+        Board board = BoardManager.getBoard();
+        List<I2CBus> i2CBuses = board.getI2CBuses();
+        if(i2CBuses.size() == 0) {
+            throw new IOException("I2C buses not enabled");
+        }
+
+        I2CBus bus = i2CBuses.get(0);
         BMP280 bmp280 = new BMP280(bus, I2CAddress.I2C_ADDRESS1);
         int chipId = bmp280.getChipId();
 

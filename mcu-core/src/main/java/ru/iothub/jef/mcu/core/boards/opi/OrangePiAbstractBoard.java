@@ -63,9 +63,9 @@ abstract class OrangePiAbstractBoard extends Board {
     protected List<I2CBus> initI2C() throws IOException {
         final List<I2CBus> i2cs = new ArrayList<>();
 
-        if (new File("/dev/i2c-2").exists()) {
+        if (new File("/dev/i2c-0").exists()) {
             i2cs.add(
-                    new I2CBus("/dev/i2c-2")
+                    new I2CBus("/dev/i2c-0")
             );
         }
         return Collections.unmodifiableList(i2cs);

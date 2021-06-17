@@ -34,7 +34,10 @@ package ru.iothub.jef.examples.i2c;
 import ru.iothub.jef.examples.Example;
 import ru.iothub.jef.examples.ExampleExecutor;
 import ru.iothub.jef.linux.i2c.I2CBus;
+import ru.iothub.jef.mcu.core.boards.Board;
+import ru.iothub.jef.mcu.core.boards.BoardManager;
 
+import java.io.IOException;
 import java.util.List;
 
 public class I2CScanner implements Example {
@@ -47,7 +50,12 @@ public class I2CScanner implements Example {
 
     @Override
     public void init() throws Exception {
-        bus = new I2CBus(1);
+        Board board = BoardManager.getBoard();
+        List<I2CBus> i2CBuses = board.getI2CBuses();
+        if(i2CBuses.size() == 0) {
+            throw new IOException("I2C buses not enabled");
+        }
+        bus = i2CBuses.get(0);
     }
 
     @Override

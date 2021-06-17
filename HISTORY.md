@@ -1,3 +1,6 @@
+### 17 June 2021
+Examples updated to BoardManager instead bus numbers
+
 ### 16 June 2021
 * Support for Orange Pi Zero2 added
 * Support for Orange Pi Win added
