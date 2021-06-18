@@ -39,7 +39,7 @@ Please see details [here](PLATFORMS.md)
 
 System requirements
 ===================
-* Linux kernel 4.8+
+* Linux kernel 4.8+ for core level (or Raspberry Pi OS/Armbian for mcu level)
 * Java 1.8+
 * Maven 3+
 
