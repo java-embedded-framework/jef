@@ -100,6 +100,8 @@ public abstract class Sys implements NativeSupport {
         return pw.username;
     }
 
+    public abstract UtcName uname() throws NativeIOException;
+
     public enum AccessFlag {
         R_OK(4),        /* Test for read permission.  */
         W_OK(2),        /* Test for write permission.  */
@@ -113,6 +115,61 @@ public abstract class Sys implements NativeSupport {
 
         public int getValue() {
             return value;
+        }
+    }
+
+    public static class UtcName {
+        //#define __NEW_UTS_LEN 64
+        private String sysName;
+        private String nodeName;
+        private String release;
+        private String version;
+        private String machine;
+        private String domainName;
+
+        public UtcName(String sysName, String nodeName, String release, String version, String machine, String domainName) {
+            this.sysName = sysName;
+            this.nodeName = nodeName;
+            this.release = release;
+            this.version = version;
+            this.machine = machine;
+            this.domainName = domainName;
+        }
+
+        public String getSysName() {
+            return sysName;
+        }
+
+        public String getNodeName() {
+            return nodeName;
+        }
+
+        public String getRelease() {
+            return release;
+        }
+
+        public String getVersion() {
+            return version;
+        }
+
+        public String getMachine() {
+            return machine;
+        }
+
+        public String getDomainName() {
+            return domainName;
+        }
+
+        @Override
+        public String toString() {
+            return "UtcName{" +
+                    "sysName='" + sysName + '\'' +
+                    ", nodeName='" + nodeName + '\'' +
+                    ", release='" + release + '\'' +
+                    ", version='" + version + '\'' +
+                    ", machine='" + machine + '\'' +
+                    ", domainName='" + domainName + '\'' +
+                    '}';
         }
     }
 

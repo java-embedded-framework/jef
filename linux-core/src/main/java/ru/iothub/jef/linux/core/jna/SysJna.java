@@ -120,8 +120,34 @@ public class SysJna extends Sys {
     }*/
 
     @Override
+    public UtcName uname() throws NativeIOException {
+        new_utsname param = new new_utsname();
+        int result = Delegate.uname(param);
+        checkIOResult("uname", result);
+        return new UtcName(
+                new String(param.sysname),
+        new String(param.nodename),
+                new String(param.release).trim(),
+                new String(param.version),
+                new String(param.machine),
+                new String(param.domainname)
+        );
+    }
+
+    @Override
     public boolean isNativeSupported() {
         return false;
+    }
+
+    @Structure.FieldOrder({"sysname", "nodename", "release", "version", "machine", "domainname"})
+    public static class new_utsname extends Structure {
+        private static final int __NEW_UTS_LEN = 64;
+        public byte[] sysname = new byte[__NEW_UTS_LEN + 1];
+        public byte[] nodename = new byte[__NEW_UTS_LEN + 1];
+        public byte[] release = new byte[__NEW_UTS_LEN + 1];
+        public byte[] version = new byte[__NEW_UTS_LEN + 1];
+        public byte[] machine = new byte[__NEW_UTS_LEN + 1];
+        public byte[] domainname = new byte[__NEW_UTS_LEN + 1];
     }
 
     @Structure.FieldOrder({"gr_name", "gr_passwd", "gr_gid", "gr_mem"})
@@ -189,6 +215,8 @@ public class SysJna extends Sys {
         public static native String getlogin();
 
         public static native int getgroups(int size, int[] list);
+
+        public static native int uname(new_utsname uname);
 
         static {
             Native.register("c");
