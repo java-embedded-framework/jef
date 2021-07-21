@@ -31,6 +31,9 @@
 
 package ru.iothub.jef.devices.library.bosch.bcm280;
 
+import ru.iothub.jef.devices.library.core.DeviceImpl;
+import ru.iothub.jef.devices.library.core.ReadProperty;
+import ru.iothub.jef.devices.library.core.WriteProperty;
 import ru.iothub.jef.linux.i2c.I2CBus;
 import ru.iothub.jef.linux.i2c.SMBus;
 
@@ -43,7 +46,7 @@ import static ru.iothub.jef.devices.library.bosch.bcm280.Register.*;
  * Datasheet for this sensor available at <a href="https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmp280-ds001.pdf">here</a>
  */
 @SuppressWarnings("unused")
-public class BMP280 {
+public class BMP280 extends DeviceImpl {
     private final static int MEAN_SEA_LEVEL_PRESSURE = 1013;
 
     private final static int CHIP_ID = 0x58;
@@ -172,6 +175,7 @@ public class BMP280 {
      * @return current standby time
      * @throws IOException if i2c bus not allow this operation
      */
+    @ReadProperty(name = "standby-time", system = true)
     public StandbyTime getStandbyTime() throws IOException {
         return StandbyTime.fromInteger(
                 (getConfig() & 0b11100000) >> 5
@@ -183,6 +187,7 @@ public class BMP280 {
      * @param time new value
      * @throws IOException if i2c bus not allow this operation
      */
+    @WriteProperty(name = "standby-time", system = true)
     public void setStandbyTime(StandbyTime time) throws IOException {
         int config = getConfig() & 0b00011111;
         setConfig(config | (time.getValue() << 5));
@@ -193,6 +198,7 @@ public class BMP280 {
      * @return {@code true} if Spi 3 wire enabled or {@code false} if otherwise
      * @throws IOException if i2c bus not allow this operation
      */
+    @ReadProperty(name = "spi-3w-enabled", system = true)
     public boolean isSpi3wEnabled() throws IOException {
         int config = getConfig();
         return (config & 1) == 1;
@@ -203,6 +209,7 @@ public class BMP280 {
      * @param enabled new value
      * @throws IOException if i2c bus not allow this operation
      */
+    @WriteProperty(name = "spi-3w-enabled", system = true)
     public void setSpi3w(boolean enabled) throws IOException {
         int config = getConfig();
         setConfig(
@@ -219,6 +226,7 @@ public class BMP280 {
      * @return current sensor value
      * @throws IOException if i2c bus not allow this operation
      */
+    @ReadProperty(name = "im-update-status", system = true)
     public int getImUpdateStatus() throws IOException {
         return getStatus() & 0b00000001;
     }
@@ -229,6 +237,7 @@ public class BMP280 {
      * @return current sensor value
      * @throws IOException if i2c bus not allow this operation
      */
+    @ReadProperty(name = "measuring-status", system = true)
     public int getMeasuringStatus() throws IOException {
         return (getStatus() >> 3) & 0b00000001;
     }
@@ -251,6 +260,26 @@ public class BMP280 {
 
     private void setControl(int value) throws IOException {
         smbus.writeByteData(BMP280_REGISTER_CONTROL.getValue(), value);
+    }
+
+    @ReadProperty(name="sensor-pressure", order=2)
+    public double getPressure() throws IOException {
+        return getBMP280Data().getPressure();
+    }
+
+    @ReadProperty(name="sensor-temperature-celsius", order=1)
+    public double getTemperatureCelsius() throws IOException {
+        return getBMP280Data().getTemperatureCelsius();
+    }
+
+    @ReadProperty(name="sensor-temperature-fahrenheit", order=3)
+    public double getTemperatureFahrenheit() throws IOException {
+        return getBMP280Data().getTemperatureFahrenheit();
+    }
+
+    @ReadProperty(name="sensor-altitude", order=0)
+    public double getAltitude() throws IOException {
+        return getBMP280Data().getAltitude();
     }
 
     /**
