@@ -37,6 +37,10 @@ public abstract class IoctlBase {
     private static long SPI_IOC_WR_MODE;
     private static long SPI_IOC_RD_BITS_PER_WORD;
     private static long SPI_IOC_WR_BITS_PER_WORD;
+
+    private static long SPI_IOC_RD_LSB_FIRST;
+    private static long SPI_IOC_WR_LSB_FIRST;
+
     private static long SPI_IOC_RD_MAX_SPEED_HZ;
     private static long SPI_IOC_WR_MAX_SPEED_HZ;
     private static long SPI_IOC_RD_MODE32;
@@ -49,6 +53,14 @@ public abstract class IoctlBase {
 
     private static long GPIOHANDLE_GET_LINE_VALUES_IOCTL;
     private static long GPIOHANDLE_SET_LINE_VALUES_IOCTL;
+
+    public static long getGpioGetChipInfoIoctl() {
+        return GPIO_GET_CHIPINFO_IOCTL;
+    }
+
+    public static long getGpioGetLineInfoIoctl() {
+        return GPIO_GET_LINEINFO_IOCTL;
+    }
 
     public long getSpiIocRdMode() {
         return SPI_IOC_RD_MODE;
@@ -82,12 +94,12 @@ public abstract class IoctlBase {
         return SPI_IOC_WR_MODE32;
     }
 
-    public static long getGpioGetChipInfoIoctl() {
-        return GPIO_GET_CHIPINFO_IOCTL;
+    public long getSpiIocRdLsbFirst() {
+        return SPI_IOC_RD_LSB_FIRST;
     }
 
-    public static long getGpioGetLineInfoIoctl() {
-        return GPIO_GET_LINEINFO_IOCTL;
+    public long getSpiIocWrLsbFirst() {
+        return SPI_IOC_WR_LSB_FIRST;
     }
 
     public long getGpioGetLineHandleIoctl() {
@@ -190,6 +202,9 @@ public abstract class IoctlBase {
         SPI_IOC_WR_MAX_SPEED_HZ = _IOW(GET_SPI_IOC_MAGIC(), 4, 4);
         SPI_IOC_RD_MODE32 = _IOR(GET_SPI_IOC_MAGIC(), 5, 4);
         SPI_IOC_WR_MODE32 = _IOW(GET_SPI_IOC_MAGIC(), 5, 4);
+        SPI_IOC_RD_LSB_FIRST = _IOR(GET_SPI_IOC_MAGIC(), 2, 1);
+        SPI_IOC_WR_LSB_FIRST = _IOW(GET_SPI_IOC_MAGIC(), 2, 1);
+
 
         GPIO_GET_CHIPINFO_IOCTL = _IOR(0xB4, 0x01, 68);
         GPIO_GET_LINEINFO_IOCTL = _IOWR(0xB4, 0x02, 72);

@@ -338,7 +338,7 @@ public class I2CBus {
      * Returns path to i2c bus in Linux file system
      * @return path to i2c bus
      */
-    String getPath() {
+    public String getPath() {
         return path;
     }
 
