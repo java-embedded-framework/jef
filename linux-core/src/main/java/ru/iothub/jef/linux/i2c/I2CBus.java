@@ -129,7 +129,7 @@ public class I2CBus {
         fd = Fcntl.getInstance().open(bus, EnumSet.of(IOFlags.O_RDWR));
         log.log(Level.INFO, () -> String.format("Opening I2C bus '%s' success", bus));
         func = loadFunctionality(fd);
-        log.log(Level.INFO, () -> String.format("I2C bus '%s' support functionalities '%d'", bus, func));
+        //log.log(Level.INFO, () -> String.format("I2C bus '%s' support functionalities '%d'", bus, func));
     }
 
     /**
