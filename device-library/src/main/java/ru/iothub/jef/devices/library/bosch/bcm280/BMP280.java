@@ -220,9 +220,9 @@ public class BMP280 extends DeviceImpl {
     }
 
     /**
-     * Automatically set to ‘1’ when the NVM data are being copied to image registers
-     * and back to ‘0’ when the copying is done. The data are copied at power-on-
-     * reset and before every conversion.
+     * Automatically set to '1' when the NVM data are being copied to image registers
+     * and back to '0' when the copying is done. The data are copied at power-on-reset
+     * and before every conversion.
      * @return current sensor value
      * @throws IOException if i2c bus not allow this operation
      */
@@ -232,8 +232,8 @@ public class BMP280 extends DeviceImpl {
     }
 
     /**
-     * Automatically set to ‘1’ whenever a conversion is
-     * running and back to ‘0’ when the results have been transferred to the data registers.
+     * Automatically set to '1' whenever a conversion is
+     * running back to '0' when the results have been transferred to the data registers
      * @return current sensor value
      * @throws IOException if i2c bus not allow this operation
      */

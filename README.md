@@ -43,11 +43,6 @@ System requirements
 * Java 1.8+
 * Maven 3+
 
-Using the Library
-=================
-* [Getting Started](GettingStarted.md)
-
-
 Project Modules
 ==================
 
@@ -56,6 +51,54 @@ Project Modules
 * **device-library** - Some 'drivers' implementation for devices
 * **examples** - usage examples
 
+Download and Install
+========
+Add Github as repository to your pom.xml
+```
+    <distributionManagement>
+        <repository>
+            <id>jef</id>
+            <name>GitHub Java Embedded Frameworks Packages</name>
+            <url>https://maven.pkg.github.com/java-embedded-framework/jef</url>
+            <uniqueVersion>false</uniqueVersion>
+        </repository>
+    </distributionManagement>
+```
+
+and add necessary dependencies
+```
+    <dependency>
+      <groupId>ru.iothub.jef</groupId>
+      <artifactId>linux-core</artifactId>
+      <version>0.0.1-ALPHA</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>ru.iothub.jef</groupId>
+      <artifactId>mcu-core</artifactId>
+      <version>0.0.1-ALPHA</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>ru.iothub.jef</groupId>
+      <artifactId>device-library</artifactId>
+      <version>0.0.1-ALPHA</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>ru.iothub.jef</groupId>
+      <artifactId>examples</artifactId>
+      <version>0.0.1-ALPHA</version>
+    </dependency>
+```
+Version 0.1-ALPHA
+You can download directly from github and build it.
+For the future releases' library will be added to maven repository.
+
+
+Using the Library
+=================
+* [Getting Started](GettingStarted.md)
 
 Projects Using JEF
 ==================
@@ -67,12 +110,6 @@ how you use the library.
 There are also a number of examples and projects within the `examples` directory of the JEF 
 project itself.
 
-Download
-========
-
-Version 0.1-ALPHA
-You can download directly from github and build it.
-For the future releases' library will be added to maven repository.
 
 Features
 ========

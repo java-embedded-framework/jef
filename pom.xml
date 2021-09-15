@@ -7,7 +7,7 @@
     <groupId>ru.iothub.jef</groupId>
     <artifactId>JEF</artifactId>
     <packaging>pom</packaging>
-    <version>0.1-ALPHA</version>
+    <version>0.0.1-ALPHA</version>
     <modules>
         <module>linux-core</module>
         <module>mcu-core</module>
@@ -26,7 +26,7 @@
     <distributionManagement>
         <repository>
             <id>jef</id>
-            <name>GitHub Apache Maven Packages</name>
+            <name>GitHub Java Embedded Frameworks Packages</name>
             <url>https://maven.pkg.github.com/java-embedded-framework/jef</url>
             <uniqueVersion>false</uniqueVersion>
         </repository>
