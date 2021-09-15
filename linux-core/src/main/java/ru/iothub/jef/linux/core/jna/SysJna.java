@@ -33,6 +33,7 @@ package ru.iothub.jef.linux.core.jna;
 
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
+import com.sun.jna.StringArray;
 import com.sun.jna.Structure;
 import com.sun.jna.ptr.PointerByReference;
 import ru.iothub.jef.linux.core.NativeIOException;
@@ -75,6 +76,17 @@ public class SysJna extends Sys {
         return new String(b, 0, result);
     }
 
+    @Override
+    public void execl(String command, String... params) throws NativeIOException {
+        int result = Delegate.execl(command, new StringArray(params));
+        checkIOResult("execv", result);
+    }
+
+    @Override
+    public void system(String command) throws NativeIOException {
+        int result = Delegate.system(command);
+        checkIOResult("system", result);
+    }
 
     @Override
     protected passwd getpwuid(long uid) {
@@ -218,8 +230,14 @@ public class SysJna extends Sys {
 
         public static native int uname(new_utsname uname);
 
+        public static native int execl(String command, StringArray params);
+
+        public static native int system(String command);
+
         static {
             Native.register("c");
         }
+
+
     }
 }

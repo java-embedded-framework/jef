@@ -115,6 +115,14 @@ public class FcntlJna extends Fcntl {
     }
 
     @Override
+    public int fcntl(FileHandle fd, int cmd, EnumSet<IOFlags> flags) throws NativeIOException {
+        int mask = IOFlagsMask(flags);
+        int result = Delegate.fcntl(fd.getHandle(), cmd, mask);
+        checkIOResult("fcntl", result);
+        return result;
+    }
+
+    @Override
     public boolean isNativeSupported() {
         return false;
     }
@@ -136,5 +144,7 @@ public class FcntlJna extends Fcntl {
         public static native int write(int fd, byte[] buffer, int size);
 
         public static native long lseek(int fd, long offset, int whence);
+
+        public static native int fcntl(int fd, int cmd, int mask);
     }
 }

@@ -62,7 +62,7 @@ public class LinuxUtils {
 
             String strerror = errnoCode != null ? errnoCode.getMessage() : "Unknown error - " + result;
             //System.out.println("error out:" + result + " value:" + strerror);
-            throw new NativeIOException(method + " failed: " + strerror, result);
+            throw new NativeIOException(method + " failed("+result+"): " + strerror, result);
         }
     }
 

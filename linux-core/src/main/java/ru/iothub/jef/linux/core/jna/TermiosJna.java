@@ -50,11 +50,12 @@ public class TermiosJna extends Termios {
     }
 
     @Override
-    public TermiosStructure tcgetattr(FileHandle handle) {
+    public TermiosStructure tcgetattr(FileHandle handle) throws NativeIOException {
         termios t = new termios();
         //termios.TermiosByReference ref = new termios.TermiosByReference(t.getPointer());
         int result = Delegate.tcgetattr(handle.getHandle(), t);
         if (result < 0) {
+            checkIOResult("tcgetattr", result);
             System.out.println("SHEEEEEEEET");
         }
         return t.generalize();
@@ -71,7 +72,7 @@ public class TermiosJna extends Termios {
     public int cfsetispeed(TermiosStructure options, int value) throws NativeIOException {
         termios t = new termios(options);
         int result = Delegate.cfsetispeed(t, value);
-        //checkIOResult("cfsetispeed", result);
+        checkIOResult("cfsetispeed", result);
         t.generalize(options);
         return result;
     }
@@ -80,7 +81,7 @@ public class TermiosJna extends Termios {
     public int cfsetospeed(TermiosStructure options, int value) throws NativeIOException {
         termios t = new termios(options);
         int result = Delegate.cfsetospeed(t, value);
-        //checkIOResult("cfsetospeed", result);
+        checkIOResult("cfsetospeed", result);
         t.generalize(options);
         return result;
     }
@@ -89,7 +90,7 @@ public class TermiosJna extends Termios {
     public void tcsetattr(FileHandle handle, int tcsanow, TermiosStructure options) throws NativeIOException {
         termios t = new termios(options);
         int result = Delegate.tcsetattr(handle.getHandle(), tcsanow, t);
-        checkIOResult("cfsetospeed", result);
+        checkIOResult("tcsetattr", result);
         t.generalize(options);
     }
 

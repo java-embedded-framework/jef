@@ -44,6 +44,7 @@ import java.io.OutputStream;
 import java.util.EnumSet;
 
 import static ru.iothub.jef.linux.core.IOFlags.*;
+import static ru.iothub.jef.linux.core.Termios.*;
 
 @SuppressWarnings("unused")
 public class SerialPort {
@@ -59,75 +60,96 @@ public class SerialPort {
         ioctl = Ioctl.getInstance();
         termios = Termios.getInstance();
         handle = fcntl.open(path, EnumSet.of(O_RDWR, O_NOCTTY, O_NONBLOCK));
+        fcntl.fcntl(handle, Fcntl.F_SETFL, EnumSet.of(O_RDWR));
 
-        TermiosStructure options = termios.tcgetattr(handle);
+        //https://blog.mbedded.ninja/programming/operating-systems/linux/linux-serial-ports-using-c-cpp/
+        TermiosStructure tty = termios.tcgetattr(handle);
 
-        termios.cfmakeraw(options);
+        // Control Modes
+        tty.c_cflag &= ~PARENB; // Clear parity bit, disabling parity
+        tty.c_cflag &= ~CSTOPB; // Clear stop field, only one stop bit used in communication
+        tty.c_cflag &= ~CSIZE; // Clear all the size bits, then use one of the statements
+        tty.c_cflag |= CS8; // 8 bits per byte
+        tty.c_cflag &= ~CRTSCTS; // Disable RTS/CTS hardware flow control
+        tty.c_cflag |= CREAD | CLOCAL; // Turn on READ & ignore ctrl lines (CLOCAL = 1)
+
+        // Local Modes
+        tty.c_lflag &= ~(ICANON | IEXTEN | ISIG | ECHO);
+        //tty.c_lflag &= ~ICANON; // Canonical mode is disabled
+        //tty.c_lflag &= ~ECHO; // Disable echo
+        //tty.c_lflag &= ~ISIG; // Disable interpretation of INTR, QUIT and SUSP
+        //tty.c_lflag |= ICANON; // Canonical mode is enabled
+
+        // Input Modes
+        tty.c_iflag &= ~(ICRNL | INPCK | ISTRIP | IXON | BRKINT);
+        //tty.c_iflag &= ~(IXON | IXOFF | IXANY); // Turn off s/w flow ctrl
+        //tty.c_iflag &= ~(IGNBRK|BRKINT|PARMRK|ISTRIP|INLCR|IGNCR|ICRNL);
+
+        // Output Modes
+        tty.c_oflag &= ~OPOST; // Prevent special interpretation of output bytes (e.g. newline chars)
+        //tty.c_oflag &= ~ONLCR; // Prevent conversion of newline to carriage return/line feed
+
+        tty.c_cc[VMIN] = 0;
+        tty.c_cc[VTIME] = 50;
+
+
+        termios.tcflush(handle, TCIFLUSH);
+        termios.tcsetattr(handle, TCSANOW, tty);
+
+        /*
+        TermiosStructure tty = termios.tcgetattr(handle);
+
+        termios.cfmakeraw(tty);
         int speed = rate.value;
 
-        termios.cfsetispeed(options, speed);
-        termios.cfsetospeed(options, speed);
+        termios.cfsetispeed(tty, speed);
+        termios.cfsetospeed(tty, speed);
 
-        options.c_cflag |= (Termios.CLOCAL | Termios.CREAD);
-        options.c_cflag &= ~Termios.PARENB;
-        options.c_cflag &= ~Termios.CSTOPB;
-        options.c_cflag &= ~Termios.CSIZE;
-        options.c_cflag |= Termios.CS8;
-        options.c_lflag &= ~(Termios.ICANON | Termios.ECHO | Termios.ECHOE | Termios.ISIG);
-        options.c_oflag &= ~Termios.OPOST;
+        tty.c_cflag |= (CLOCAL | CREAD) ;
+        tty.c_cflag &= ~PARENB ;
+        tty.c_cflag &= ~CSTOPB ;
+        tty.c_cflag &= ~CSIZE ;
+        tty.c_cflag |= CS8 ;
+        tty.c_lflag &= ~(ICANON | ECHO | *//*ECHOE | *//*ISIG | IEXTEN) ;
+        tty.c_oflag &= ~OPOST ; // ++
 
-        options.c_cc[Termios.VMIN] = 0;
-        options.c_cc[Termios.VTIME] = 100;    // Ten seconds (100 deciseconds)
+        tty.c_cc [VMIN]  =   1 ;
+        tty.c_cc [VTIME] = 5 ;	// Ten seconds (100 deciseconds)
 
-        termios.tcsetattr(handle, Termios.TCSANOW, options);
+        termios.tcflush(handle, TCIFLUSH);
+        termios.tcsetattr(handle, TCSANOW, tty);
 
         IntReference statusRef = new IntReference();
 
-        ioctl.ioctl(handle, Ioctl.TIOCMGET, statusRef);
+        try {
+            ioctl.ioctl(handle, Ioctl.TIOCMGET, statusRef);
 
-        int status = statusRef.getValue();
+            int status = statusRef.getValue();
 
-        status |= Termios.TIOCM_DTR;
-        status |= Termios.TIOCM_RTS;
+            status |= Termios.TIOCM_DTR;
+            status |= Termios.TIOCM_RTS;
 
-        statusRef.setValue(status);
+            statusRef.setValue(status);
 
-        ioctl.ioctl(handle, Ioctl.TIOCMSET, statusRef);
+            ioctl.ioctl(handle, Ioctl.TIOCMSET, statusRef);
+        } catch (NativeIOException e) {
+            e.printStackTrace();
+        }*/
 
         is = new SerialInputStream();
         os = new SerialOutputStream();
-    }
-
-    public void flush() {
-        termios.tcflush(handle, Termios.TCIOFLUSH);
     }
 
     public void close() {
         handle.close();
     }
 
-    private void put(int i) throws IOException {
-        fcntl.write(handle, new byte[]{(byte) i}, 1);
-    }
-
-    private int available() throws NativeIOException {
-        IntReference ref = new IntReference();
-        if (ioctl.ioctl(handle, Ioctl.FIONREAD, ref) == -1) {
-            return -1;
-        }
-        return ref.getValue();
-    }
-
-    private int read() throws NativeIOException {
-        byte[] b = new byte[1];
-        if (fcntl.read(handle, b, 1) != 1) {
-            return -1;
-        }
-        return b[0] & 0xFF;
-    }
-
     public InputStream getInputStream() {
         return is;
+    }
+
+    public FileHandle getHandle() {
+        return handle;
     }
 
     public OutputStream getOutputStream() {
@@ -135,36 +157,74 @@ public class SerialPort {
     }
 
     private final class SerialOutputStream extends OutputStream {
+/*        @Override
+        public void write(byte[] b) throws IOException {
+            fcntl.write(handle, b, b.length);
+        }
+
+        @Override
+        public void write(byte[] b, int off, int len) throws IOException {
+            byte[] slice = Arrays.copyOfRange(b, off, off+len);
+            System.out.println("write: " + Arrays.toString(slice));
+            fcntl.write(handle, slice, slice.length);
+        }*/
+
         @Override
         public void write(int b) throws IOException {
-            SerialPort.this.put(b);
+            fcntl.write(handle, new byte[]{(byte) b}, 1);
         }
 
         @Override
         public void flush() {
-            SerialPort.this.flush();
+            termios.tcflush(handle, Termios.TCIOFLUSH);
         }
 
         @Override
         public void close() throws IOException {
-            SerialPort.this.close();
+            handle.close();
         }
     }
 
     private final class SerialInputStream extends InputStream {
+       /* @Override
+        public int read(byte[] b) throws IOException {
+            return fcntl.read(handle, b, b.length);
+        }
+
+        @Override
+        public int read(byte[] b, int off, int len) throws IOException {
+            byte[] bb = new byte[len];
+            int result = fcntl.read(handle, bb, bb.length);
+            System.arraycopy(bb, 0, b, off, len);
+            return result;
+        }*/
+
+        @Override
+        public long skip(long n) throws IOException {
+            return fcntl.lseek(handle, n, Fcntl.Whence.SEEK_CUR);
+        }
+
         @Override
         public int read() throws IOException {
-            return SerialPort.this.read();
+            byte[] b = new byte[1];
+            if (fcntl.read(handle, b, 1) != 1) {
+                return -1;
+            }
+            return b[0] & 0xFF;
         }
 
         @Override
         public int available() throws IOException {
-            return SerialPort.this.available();
+            IntReference ref = new IntReference();
+            if (ioctl.ioctl(handle, Ioctl.FIONREAD, ref) == -1) {
+                return -1;
+            }
+            return ref.getValue();
         }
 
         @Override
         public void close() throws IOException {
-            SerialPort.this.close();
+            handle.close();
         }
     }
 }

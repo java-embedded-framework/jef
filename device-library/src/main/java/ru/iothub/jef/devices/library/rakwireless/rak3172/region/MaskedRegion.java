@@ -29,44 +29,30 @@
  * Please contact sales@iot-hub.ru if you have any question.
  */
 
-package ru.iothub.jef.linux.serial;
+package ru.iothub.jef.devices.library.rakwireless.rak3172.region;
 
-public enum SerialBaudRate {
-    B0(0),         /* hang up */
-    B50(1),
-    B75(2),
-    B110(3),
-    B134(4),
-    B150(5),
-    B200(6),
-    B300(7),
-    B600(10),
-    B1200(11),
-    B1800(12),
-    B2400(13),
-    B4800(14),
-    B9600(15),
-    B19200(16),
-    B38400(17),
-    B57600(10001),
-    B115200(10002),
-    B230400(10003),
-    B460800(10004),
-    B500000(10005),
-    B576000(10006),
-    B921600(10007),
-    B1000000(10010),
-    B1152000(10011),
-    B1500000(10012),
-    B2000000(10013),
-    B2500000(10014),
-    B3000000(10015),
-    B3500000(10016),
-    B4000000(10017);
+import ru.iothub.jef.devices.library.rakwireless.rak3172.RAK3172;
+import ru.iothub.jef.devices.library.rakwireless.rak3172.Rak3172ATCommands;
 
-    final int value;
+import java.io.IOException;
 
-    SerialBaudRate(int value) {
-        this.value = value;
+public abstract class MaskedRegion<E extends Region<E>, M> extends Region<E> {
+    private ChannelMask<M> mask;
+
+    public MaskedRegion(RAK3172 rak) {
+        super(rak);
+    }
+
+    public abstract E withMask(ChannelMask<M> mask);
+
+    protected void mask(ChannelMask<M> mask) {
+        this.mask = mask;
+    }
+
+    @Override
+    public void apply(RAK3172 rak) throws IOException {
+        super.apply(rak);
+        Rak3172ATCommands commands = rak.getCommands();
+        commands.AT_MASK().set(mask.getHex());
     }
 }

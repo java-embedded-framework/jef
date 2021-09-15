@@ -39,6 +39,8 @@ import ru.iothub.jef.examples.i2c.I2CScanner;
 import ru.iothub.jef.examples.misc.Blink;
 import ru.iothub.jef.examples.misc.BlinkAll;
 import ru.iothub.jef.examples.onewire.DS18B20Example;
+import ru.iothub.jef.examples.serial.RAK3172Example;
+import ru.iothub.jef.examples.serial.RAK3172ExampleUSB;
 import ru.iothub.jef.examples.serial.SerialExample;
 import ru.iothub.jef.examples.spi.W25xFlashExample;
 
@@ -90,6 +92,8 @@ class ExampleManager {
             add(new ExampleGroup("Serial") {
                 {
                     add(new SerialExample());
+/*                    add(new RAK3172Example());
+                    add(new RAK3172ExampleUSB());*/
                 }
             });
 

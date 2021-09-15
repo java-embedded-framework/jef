@@ -80,6 +80,10 @@ public abstract class Sys implements NativeSupport {
 
     public abstract String getcwd() throws NativeIOException;
 
+    public abstract void execl(String command, String... params) throws NativeIOException;
+
+    public abstract void system(String command) throws NativeIOException;
+
     protected abstract passwd getpwuid(long uid);
 
     //protected abstract int[] getgrouplist(passwd obj);

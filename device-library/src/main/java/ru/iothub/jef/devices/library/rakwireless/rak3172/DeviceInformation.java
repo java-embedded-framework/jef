@@ -29,44 +29,45 @@
  * Please contact sales@iot-hub.ru if you have any question.
  */
 
-package ru.iothub.jef.linux.serial;
+package ru.iothub.jef.devices.library.rakwireless.rak3172;
 
-public enum SerialBaudRate {
-    B0(0),         /* hang up */
-    B50(1),
-    B75(2),
-    B110(3),
-    B134(4),
-    B150(5),
-    B200(6),
-    B300(7),
-    B600(10),
-    B1200(11),
-    B1800(12),
-    B2400(13),
-    B4800(14),
-    B9600(15),
-    B19200(16),
-    B38400(17),
-    B57600(10001),
-    B115200(10002),
-    B230400(10003),
-    B460800(10004),
-    B500000(10005),
-    B576000(10006),
-    B921600(10007),
-    B1000000(10010),
-    B1152000(10011),
-    B1500000(10012),
-    B2000000(10013),
-    B2500000(10014),
-    B3000000(10015),
-    B3500000(10016),
-    B4000000(10017);
+import java.io.IOException;
 
-    final int value;
+@SuppressWarnings("unused")
+public class DeviceInformation {
+    private int receiveSignalStrengthIndicator;
+    private int signalToNoiseRatio;
+    private String version;
 
-    SerialBaudRate(int value) {
-        this.value = value;
+    public DeviceInformation(RAK3172 rak) throws IOException {
+        read(rak);
+    }
+
+    public int getReceiveSignalStrengthIndicator() {
+        return receiveSignalStrengthIndicator;
+    }
+
+    public int getSignalToNoiseRatio() {
+        return signalToNoiseRatio;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    void read(RAK3172 rak) throws IOException {
+        Rak3172ATCommands commands = rak.getCommands();
+        receiveSignalStrengthIndicator = Integer.parseInt(commands.AT_RSSI().get());
+        signalToNoiseRatio = Integer.parseInt(commands.AT_SNR().get());
+        version = commands.AT_VER().get();
+    }
+
+    @Override
+    public String toString() {
+        return "DeviceInformation{" +
+                "receiveSignalStrengthIndicator=" + receiveSignalStrengthIndicator +
+                ", signalToNoiseRatio=" + signalToNoiseRatio +
+                ", version='" + version + '\'' +
+                '}';
     }
 }
