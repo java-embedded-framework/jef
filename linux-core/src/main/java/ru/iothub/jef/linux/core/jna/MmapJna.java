@@ -36,14 +36,14 @@ import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 import ru.iothub.jef.linux.core.Errno;
 import ru.iothub.jef.linux.core.io.FileHandle;
-import ru.iothub.jef.linux.core.Mman;
+import ru.iothub.jef.linux.core.Mmap;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.EnumSet;
 
-public class MmanJna extends Mman {
-    public MmanJna() {
+public class MmapJna extends Mmap {
+    public MmapJna() {
     }
 
     @Override

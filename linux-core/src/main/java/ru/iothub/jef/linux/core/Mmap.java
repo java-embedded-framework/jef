@@ -41,7 +41,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 // sudo adduser pi kmem
 // https://unix.stackexchange.com/questions/475800/non-root-read-access-to-dev-mem-by-kmem-group-members-fails
 // sudo setcap cap_sys_rawio=ep /usr/lib/jvm/graalvm-ce-java11-20.2.0/bin/java
-public abstract class Mman implements NativeSupport {
+public abstract class Mmap implements NativeSupport {
     public enum MemoryProtection {
         PROT_READ(0x1), /* Page can be read. */
         PROT_WRITE(0x2), /* Page can be written. */
@@ -76,7 +76,7 @@ public abstract class Mman implements NativeSupport {
     }
 
     private static final AtomicBoolean initialized = new AtomicBoolean(false);
-    private static Mman instance = null;
+    private static Mmap instance = null;
 
     public abstract ByteBuffer mmap(
             FileHandle handle,
@@ -140,11 +140,11 @@ extern int shm_unlink (const char *__name);
 
     */
 
-    public static Mman getInstance() {
+    public static Mmap getInstance() {
         if (instance == null && !initialized.get()) {
-            synchronized (Mman.class) {
+            synchronized (Mmap.class) {
                 if (instance == null && !initialized.get()) {
-                    instance = NativeBeanLoader.createContent(Mman.class);
+                    instance = NativeBeanLoader.createContent(Mmap.class);
                     initialized.set(true);
                 }
             }
