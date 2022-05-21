@@ -30,7 +30,7 @@ If your platform is supported by [libffi](http://en.wikipedia.org/wiki/Libffi), 
 are you can build JEF for it.
 
 If your platform is supported by [GraalVM Native Image Compiler](https://github.com/graalvm/graalvm-ce-builds/releases/),
-then chances are you can build JEF binaries images for these platforms... (commercial version only)
+then chances are you can build JEF binaries images for these platforms... 
 
 Supported boards
 ===================
@@ -125,15 +125,13 @@ Community and Support
 All questions should be posted to the [StackOverflow](http://stackoverflow.com/questions/tagged/jef). 
 Issues can be submitted [here on Github](https://github.com/java-embedded-framework/jef/issues).
 
-For commercial support, please contact [here](mailto:sales@iot-hub.ru).
-
-
 Contributing
 ============
 Please see details [here](CONTRIBUTING.md)
 
 License
 =======
+From 21.05.2022 licence changed to Apache2.0
 Please see details [here](LICENSE)
 
 For vendors
@@ -141,7 +139,7 @@ For vendors
 If you want to add your board support to framework or 
 add support of your devices to 
 [device library](https://github.com/java-embedded-framework/jef/tree/master/device-library/src/main/java/ru/iothub/jef/devices/library) 
-please contact to [support](mailto:support@iot-hub.ru)
+[please contact](mailto:support@iot-hub.ru)
 
 What is planned in future releases?
 =======
