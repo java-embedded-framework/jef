@@ -7,7 +7,7 @@
     <groupId>ru.iothub.jef</groupId>
     <artifactId>JEF</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.1-ALPHA</version>
+    <version>0.0.1-SNAPSHOT</version>
     <modules>
         <module>linux-core</module>
         <module>mcu-core</module>

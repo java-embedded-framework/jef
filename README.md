@@ -74,28 +74,28 @@ and add necessary dependencies
     <dependency>
       <groupId>ru.iothub.jef</groupId>
       <artifactId>linux-core</artifactId>
-      <version>0.0.1-ALPHA</version>
+      <version>0.0.1</version>
     </dependency>
     
     <dependency>
       <groupId>ru.iothub.jef</groupId>
       <artifactId>mcu-core</artifactId>
-      <version>0.0.1-ALPHA</version>
+      <version>0.0.1</version>
     </dependency>
     
     <dependency>
       <groupId>ru.iothub.jef</groupId>
       <artifactId>device-library</artifactId>
-      <version>0.0.1-ALPHA</version>
+      <version>0.0.1</version>
     </dependency>
     
     <dependency>
       <groupId>ru.iothub.jef</groupId>
       <artifactId>examples</artifactId>
-      <version>0.0.1-ALPHA</version>
+      <version>0.0.1</version>
     </dependency>
 ```
-Version 0.1-ALPHA
+Version 0.1-SNAPSHOT
 You can download directly from github and build it.
 For the future releases' library will be added to maven repository.
 
