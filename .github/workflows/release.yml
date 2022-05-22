@@ -1,4 +1,4 @@
-name: Quarkiverse Release
+name: Java Embedded Framework Release
 
 on:
   pull_request:
