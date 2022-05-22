@@ -38,3 +38,4 @@ hs_err_pid*
 
 debug.sh
 publish.bat
+/.github/release/maven-settings.xml
