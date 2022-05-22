@@ -1,6 +1,10 @@
 Java Embedded Framework (JEF)
 ========================
 
+[![Build](https://github.com/java-embedded-framework/jef/workflows/Build/badge.svg)](https://github.com/java-embedded-framework/jef/actions?query=workflow%3ABuild)
+[![Maven Central](https://img.shields.io/maven-central/v/ru.iothub.jef/linux-core.svg?label=Maven%20Central)](https://search.maven.org/artifact/ru.iothub.jef/linux-core)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 <!--The definitive JEF reference (including an overview and usage details) 
 is in the [JavaDoc](http://java-embedded-framework.github.io/jef/0.1-ALPHA/javadoc/).  
 Please read the [overview](http://java-embedded-framework.github.io/jef/0.1-ALPHA/javadoc/overview-summary.html#overview_description).  
