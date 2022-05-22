@@ -24,6 +24,12 @@
         <maven.deploy.plugin.version>3.0.0-M2</maven.deploy.plugin.version>
     </properties>
 
+    <scm>
+        <connection>scm:git:git://github.com/java-embedded-framework/jef.git</connection>
+        <developerConnection>scm:git:git@github.com:java-embedded-framework/jef.git</developerConnection>
+        <url>https://github.com/java-embedded-framework/jef/</url>
+        <tag>master</tag>
+    </scm>
     <distributionManagement>
         <repository>
             <id>ossrh</id>
