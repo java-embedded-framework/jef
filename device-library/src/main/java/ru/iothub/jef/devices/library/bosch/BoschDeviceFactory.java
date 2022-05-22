@@ -6,7 +6,6 @@ import ru.iothub.jef.devices.library.core.DeviceFactory;
 
 public abstract class BoschDeviceFactory implements DeviceFactory {
     private final static String VENDOR = "Bosch";
-
     @Override
     public String getVendor() {
         return VENDOR;
