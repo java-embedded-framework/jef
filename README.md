@@ -23,8 +23,7 @@ anything except Java code** - no JNI or native additional code is required.
 This functionality is comparable to Linux like platforms.
 
 JEF allows you to create pure java based system only in Java or compile you applications 
-to small(10+ megabytes) pure native binaries(C++ like ) for 64-bits platforms (commercial version only) 
-without any code modification. 
+to small(10+ megabytes) pure native binaries(C++ like ) for 64-bits platforms without any code modification. 
 
 Supported Platforms
 ===================
@@ -121,8 +120,7 @@ Features
 * Ability to access devices over I2C interface
 * Ability to access devices over Serial interface
 * Ability to access GPIO over Linux GPIO interface
-* Ability to compile you code to JVM packages and Native binaries (commercial version only) without 
-  any code modification 
+* Ability to compile you code to JVM packages and Native binaries without any code modification 
 
 Community and Support
 =====================
