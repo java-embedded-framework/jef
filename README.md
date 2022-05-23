@@ -72,25 +72,25 @@ Add Github as repository to your pom.xml
 and add necessary dependencies
 ```
     <dependency>
-      <groupId>ru.iothub.jef</groupId>
+      <groupId>io.github.java-embedded-framework</groupId>
       <artifactId>linux-core</artifactId>
       <version>0.0.1</version>
     </dependency>
     
     <dependency>
-      <groupId>ru.iothub.jef</groupId>
+      <groupId>io.github.java-embedded-framework</groupId>
       <artifactId>mcu-core</artifactId>
       <version>0.0.1</version>
     </dependency>
     
     <dependency>
-      <groupId>ru.iothub.jef</groupId>
+      <groupId>io.github.java-embedded-framework</groupId>
       <artifactId>device-library</artifactId>
       <version>0.0.1</version>
     </dependency>
     
     <dependency>
-      <groupId>ru.iothub.jef</groupId>
+      <groupId>io.github.java-embedded-framework</groupId>
       <artifactId>examples</artifactId>
       <version>0.0.1</version>
     </dependency>

@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>mcu-core</artifactId>
-    <groupId>ru.iothub.jef</groupId>
+    <groupId>io.github.java-embedded-framework</groupId>
     <version>0.0.1-SNAPSHOT</version>
 
     <properties>
@@ -16,18 +16,9 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
-    <distributionManagement>
-        <repository>
-            <id>jef</id>
-            <name>GitHub Java Embedded Frameworks Packages</name>
-            <url>https://maven.pkg.github.com/java-embedded-framework/jef</url>
-            <uniqueVersion>false</uniqueVersion>
-        </repository>
-    </distributionManagement>
-
     <dependencies>
         <dependency>
-            <groupId>ru.iothub.jef</groupId>
+            <groupId>io.github.java-embedded-framework</groupId>
             <artifactId>linux-core</artifactId>
             <version>${project.version}</version>
         </dependency>

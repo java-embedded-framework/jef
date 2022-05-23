@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ru.iothub.jef</groupId>
-    <artifactId>JEF</artifactId>
+    <groupId>io.github.java-embedded-framework</groupId>
+    <artifactId>jef</artifactId>
     <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
     <modules>
@@ -18,10 +18,12 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <build.plugins.plugin.version>3.8.1</build.plugins.plugin.version>
         <maven.compiler.parameters>true</maven.compiler.parameters>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.deploy.plugin.version>3.0.0-M2</maven.deploy.plugin.version>
+        <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
     </properties>
 
     <scm>
@@ -42,21 +44,71 @@
     <dependencies>
     </dependencies>
 
-<!--    <build>
-    <plugins>
-        <plugin>
-            <artifactId>maven-deploy-plugin</artifactId>
-            <version>${maven.deploy.plugin.version}</version>
-            <executions>
-                <execution>
-                    <id>default-deploy</id>
-                    <phase>deploy</phase>
-                    <goals>
-                        <goal>deploy</goal>
-                    </goals>
-                </execution>
-            </executions>
-        </plugin>
-    </plugins>
-    </build>-->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <tagNameFormat>@{project.version}</tagNameFormat>
+                    <pushChanges>false</pushChanges>
+                    <localCheckout>true</localCheckout>
+                    <remoteTagging>false</remoteTagging>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <configuration>
+                            <gpgArguments>
+                                <arg>--pinentry-mode</arg>
+                                <arg>loopback</arg>
+                            </gpgArguments>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>${nexus-staging-maven-plugin.version}</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                            <serverId>ossrh</serverId>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                            <stagingProgressTimeoutMinutes>60</stagingProgressTimeoutMinutes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
