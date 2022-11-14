@@ -25,6 +25,36 @@ This functionality is comparable to Linux like platforms.
 JEF allows you to create pure java based system only in Java or compile you applications 
 to small(10+ megabytes) pure native binaries(C++ like ) for 64-bits platforms without any code modification. 
 
+Important Note
+===================
+Project moved (temporary or maybe permanently to [Quarkus repository](https://github.com/quarkiverse/quarkus-jef) and can be used as part of [Quarkus platform](https://www.quarkus.io)
+
+Integration examples available [here](https://github.com/alexeysharandin/quarkus-jef-example)
+
+If you want to use library only on API level without Quarkus, you can include API libraries directly from maven central:
+```
+<dependency>
+    <groupId>io.quarkiverse.jef</groupId>
+    <artifactId>linux-core</artifactId>
+    <version>${JEF_VERSION}</version>
+</dependency>
+<dependency>
+    <groupId>io.quarkiverse.jef</groupId>
+    <artifactId>linux-native-core</artifactId>
+    <version>${JEF_VERSION}</version>
+</dependency>
+<dependency>
+    <groupId>io.quarkiverse.jef</groupId>
+    <artifactId>mcu-core</artifactId>
+    <version>${JEF_VERSION}</version>
+</dependency>
+<dependency>
+    <groupId>io.quarkiverse.jef</groupId>
+    <artifactId>device-library</artifactId>
+    <version>${JEF_VERSION}</version>
+</dependency>
+``` 
+
 Supported Platforms
 ===================
 JEF will build on most linux-like platforms with a reasonable set of GNU tools and a JDK.
@@ -54,49 +84,7 @@ Project Modules
 * **device-library** - Some 'drivers' implementation for devices
 * **examples** - usage examples
 
-Download and Install
-========
-Add Github as repository to your pom.xml
-```
-    <distributionManagement>
-        <repository>
-            <id>jef</id>
-            <name>GitHub Java Embedded Frameworks Packages</name>
-            <url>https://maven.pkg.github.com/java-embedded-framework/jef</url>
-            <uniqueVersion>false</uniqueVersion>
-        </repository>
-    </distributionManagement>
-```
 
-and add necessary dependencies
-```
-    <dependency>
-      <groupId>io.github.java-embedded-framework</groupId>
-      <artifactId>linux-core</artifactId>
-      <version>0.0.1</version>
-    </dependency>
-    
-    <dependency>
-      <groupId>io.github.java-embedded-framework</groupId>
-      <artifactId>mcu-core</artifactId>
-      <version>0.0.1</version>
-    </dependency>
-    
-    <dependency>
-      <groupId>io.github.java-embedded-framework</groupId>
-      <artifactId>device-library</artifactId>
-      <version>0.0.1</version>
-    </dependency>
-    
-    <dependency>
-      <groupId>io.github.java-embedded-framework</groupId>
-      <artifactId>examples</artifactId>
-      <version>0.0.1</version>
-    </dependency>
-```
-Version 0.1-SNAPSHOT
-You can download directly from github and build it.
-For the future releases' library will be added to maven repository.
 
 
 Using the Library
